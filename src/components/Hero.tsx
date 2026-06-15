@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, FileText, Mail } from "lucide-react";
+import { ArrowDown, FileText, Mail } from "lucide-react";
 import { profile, socials } from "../data/profile";
-import { Avatar } from "./ui/Avatar";
+import { DeviceShowcase } from "./DeviceShowcase";
 import { SocialIcon } from "./ui/SocialIcon";
 
 const container = {
@@ -126,28 +126,9 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="order-first justify-self-center lg:order-last lg:justify-self-end"
+            className="order-first flex justify-center lg:order-last lg:justify-end"
           >
-            <div className="relative">
-              <div
-                aria-hidden="true"
-                className="absolute -inset-3 rounded-[26px] accent-gradient opacity-20 blur-xl"
-              />
-              <div className="relative overflow-hidden rounded-[22px] border border-line bg-surface p-1.5">
-                <Avatar
-                  src="/profile.jpg"
-                  name={profile.name}
-                  className="aspect-[4/5] w-60 rounded-2xl sm:w-72 lg:w-80"
-                />
-              </div>
-              <a
-                href="#contact"
-                className="absolute -bottom-3 -right-3 inline-flex items-center gap-1.5 rounded-full border border-line bg-bg/90 px-3.5 py-2 text-xs font-medium text-fg shadow-lg backdrop-blur transition-colors hover:border-accent/50 hover:text-accent"
-              >
-                Let&apos;s talk
-                <ArrowUpRight size={14} aria-hidden="true" />
-              </a>
-            </div>
+            <DeviceShowcase />
           </motion.div>
         </div>
       </div>

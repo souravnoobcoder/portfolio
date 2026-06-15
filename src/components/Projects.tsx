@@ -1,9 +1,22 @@
-import { Check, Sparkles } from "lucide-react";
+import type { ComponentType } from "react";
+import { Check, Flame, Smartphone, Sparkles, Tablet, Tv } from "lucide-react";
 import { Section } from "./ui/Section";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
+import { AppleIcon, AndroidIcon } from "./ui/BrandIcons";
 import { projects, type Project } from "../data/profile";
 import { cn } from "../lib/cn";
+
+type IconType = ComponentType<{ size?: number | string; className?: string }>;
+
+function platformIcon(platform: string): IconType {
+  if (/fire/i.test(platform)) return Flame;
+  if (/ios|ipad|iphone/i.test(platform)) return AppleIcon;
+  if (/android/i.test(platform)) return AndroidIcon;
+  if (/tv/i.test(platform)) return Tv;
+  if (/tablet/i.test(platform)) return Tablet;
+  return Smartphone;
+}
 
 function ProjectCard({ project, large }: { project: Project; large?: boolean }) {
   return (
@@ -14,14 +27,18 @@ function ProjectCard({ project, large }: { project: Project; large?: boolean }) 
       )}
     >
       <div className="mb-3 flex flex-wrap gap-1.5">
-        {project.platforms.map((p) => (
-          <span
-            key={p}
-            className="rounded-md bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-muted"
-          >
-            {p}
-          </span>
-        ))}
+        {project.platforms.map((p) => {
+          const Icon = platformIcon(p);
+          return (
+            <span
+              key={p}
+              className="inline-flex items-center gap-1 rounded-md bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-muted"
+            >
+              <Icon size={11} className="text-muted" />
+              {p}
+            </span>
+          );
+        })}
       </div>
 
       <h3

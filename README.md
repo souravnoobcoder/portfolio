@@ -15,17 +15,12 @@ npm run build      # production build → dist/
 npm run preview    # preview the production build locally
 ```
 
-## Add your photo
+## Hero visual
 
-The hero shows an **“SR” monogram fallback** until you add a photo. To use your
-real picture, drop a square-ish portrait here:
-
-```
-public/profile.jpg
-```
-
-A portrait around **800×1000px** (4:5) works best. No code change needed — it’s
-loaded from `/profile.jpg` and the layout falls back gracefully if it’s missing.
+The hero shows a **device showcase** (a TV running a fixed-focus content rail
+plus a companion phone, framed by the Android / iOS / Android TV / Fire TV
+platforms) instead of a photo — it communicates the cross-platform story at a
+glance. It lives in [src/components/DeviceShowcase.tsx](src/components/DeviceShowcase.tsx).
 
 ## Edit your content
 
