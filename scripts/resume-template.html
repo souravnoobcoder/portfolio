@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sourav Rawat — Senior Android Developer</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 10mm 13mm;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #1a1d21;
+        font-size: 10px;
+        line-height: 1.38;
+      }
+      .name {
+        font-size: 23px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+        color: #0c1f17;
+      }
+      .title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #0e9f6e;
+        margin-top: 2px;
+      }
+      .contact {
+        font-size: 9.4px;
+        color: #5b6168;
+        margin-top: 4px;
+      }
+      .contact a {
+        color: #5b6168;
+        text-decoration: none;
+      }
+      .contact span {
+        margin: 0 6px;
+        color: #c2c7cc;
+      }
+      h2 {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #0e9f6e;
+        border-bottom: 1.2px solid #d9efe6;
+        padding-bottom: 3px;
+        margin: 11px 0 6px;
+      }
+      .summary {
+        color: #33383d;
+      }
+      .job {
+        margin-bottom: 7px;
+      }
+      .job-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .role {
+        font-weight: 700;
+        color: #14181c;
+        font-size: 10.6px;
+      }
+      .company {
+        color: #0e9f6e;
+        font-weight: 600;
+      }
+      .period {
+        font-size: 9px;
+        color: #6b7178;
+        white-space: nowrap;
+      }
+      .meta {
+        font-size: 8.8px;
+        color: #80868d;
+        margin: 1px 0 4px;
+      }
+      ul {
+        list-style: none;
+      }
+      .job li,
+      .os li {
+        position: relative;
+        padding-left: 11px;
+        margin-bottom: 2.5px;
+        color: #33383d;
+      }
+      .job li::before,
+      .os li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: #0e9f6e;
+      }
+      .skills div {
+        margin-bottom: 3px;
+      }
+      .skills b {
+        color: #14181c;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 22px;
+      }
+      .edu-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="name">Sourav Rawat</div>
+      <div class="title">Senior Android Developer — Kotlin · Jetpack Compose · KMP / CMP</div>
+      <div class="contact">
+        Noida, India
+        <span>•</span>
+        <a href="https://linkedin.com/in/sourav-rawat-android-dev">linkedin.com/in/sourav-rawat-android-dev</a>
+        <span>•</span>
+        <a href="https://github.com/souravnoobcoder">github.com/souravnoobcoder</a>
+      </div>
+    </header>
+
+    <h2>Professional Summary</h2>
+    <p class="summary">
+      Senior Android Developer with 4+ years building high-performance apps and cross-platform SDKs in Kotlin,
+      Jetpack Compose, and Clean Architecture. Architected a single Compose panel SDK that runs inside the video
+      players of tier-1 US sports &amp; entertainment streaming platforms — serving millions of viewers — backed by a
+      Kotlin Multiplatform data layer adopted by the iOS, tvOS, and web teams. Strong in MVVM and multi-module
+      architecture, coroutines / Flow, Media3 / ExoPlayer playback (HLS, Widevine DRM, subtitles), in-app purchases,
+      and partner-facing SDK delivery.
+    </p>
+
+    <h2>Experience</h2>
+
+    <div class="job">
+      <div class="job-head">
+        <span><span class="role">Senior Android Developer</span> — <span class="company">TVID Services</span></span>
+        <span class="period">Jun 2024 – Present</span>
+      </div>
+      <div class="meta">Noida, India</div>
+      <ul>
+        <li>Architected a single Jetpack Compose panel SDK running across Android TV, Fire TV, and Android mobile with platform-adaptive UI — in production inside the video players of tier-1 US sports &amp; entertainment streaming platforms, serving millions of viewers; additional partner integrations in progress.</li>
+        <li>Wrote the SDK's entire data / business-logic layer in Kotlin Multiplatform, adopted by the iOS, tvOS, and web panel teams — one implementation of the APIs and business rules instead of four platform rewrites.</li>
+        <li>Led migration of an OTT streaming app from Jetpack Compose to Compose Multiplatform — one codebase targeting Android mobile, Android TV, Fire TV, and iOS (pre-release), with adaptive layouts for tablets and iPad.</li>
+        <li>Built a Leanback + mobile-compatible SDK powering live streaming for partner streaming apps across Android TV, Fire TV, and mobile; delivered Media3 / ExoPlayer playback (HLS, Widevine DRM, subtitles) and D-pad navigation, and integrated Google Play and Amazon In-App Purchases on a Fire TV streaming app.</li>
+        <li>Partner with US-based engineering teams across time zones; author integration guides and sample apps, and ship versioned, backwards-compatible SDK releases guarded by unit, Compose UI, and screenshot tests plus code reviews.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <span><span class="role">Android Developer</span> — <span class="company">Hitech Global</span></span>
+        <span class="period">Jun 2023 – Apr 2024</span>
+      </div>
+      <div class="meta">New Delhi, India · Full-time, Hybrid</div>
+      <ul>
+        <li>Built TV and second-screen remote-control features using WiFi NSD, sockets, and Android sensors for cross-device pairing with Android TVs.</li>
+        <li>Engineered news apps for mobile and Android TV with HLS streaming via ExoPlayer and the YouTube Player API; curated channels and auto-play by category.</li>
+        <li>Redesigned a launcher UI/UX with deep linking, increasing user engagement by 35%; resolved critical stability issues to reach a 97% crash-free rate.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <span><span class="role">Android Developer</span> — <span class="company">Hitech Global</span></span>
+        <span class="period">Apr 2022 – May 2023</span>
+      </div>
+      <div class="meta">New Delhi, India · Part-time, Remote</div>
+      <ul>
+        <li>Contributed to Android TV launcher development (Leanback) and AOSP-related platform tasks.</li>
+        <li>Implemented Android cryptography for secure on-device data handling; developed WebView modules integrating HTML / CSS / JavaScript with native bridges.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <span><span class="role">Android Intern</span> — <span class="company">Hitech Global</span></span>
+        <span class="period">Dec 2021 – Apr 2022</span>
+      </div>
+      <ul>
+        <li>Built video-streaming proof-of-concept apps and a Leanback-based Android TV launcher; contributed to AOSP integration tasks.</li>
+      </ul>
+    </div>
+
+    <h2>Technical Skills</h2>
+    <div class="skills two-col">
+      <div><b>Languages:</b> Kotlin, Java</div>
+      <div><b>Multiplatform:</b> Kotlin Multiplatform (KMP), Compose Multiplatform (CMP), shared KMP data layers</div>
+      <div><b>UI:</b> Jetpack Compose, XML Layouts, Material Design, D-pad / TV UI, adaptive layouts</div>
+      <div><b>Architecture:</b> Clean Architecture, MVVM, Multi-module</div>
+      <div><b>Media:</b> Media3 / ExoPlayer, HLS, Widevine DRM, Subtitles (WebVTT), ad insertion, AVPlayer (iOS)</div>
+      <div><b>Async:</b> Coroutines, Flow / StateFlow, RxJava / RxAndroid</div>
+      <div><b>TV Platforms:</b> Android TV, Amazon Fire TV, Leanback, custom launchers, AOSP</div>
+      <div><b>Networking:</b> Ktor Client, REST, WebSockets, WiFi NSD, WiFi P2P</div>
+      <div><b>DI &amp; Data:</b> Hilt, Koin, Room, Realm, SQLite, Firebase</div>
+      <div><b>Testing &amp; Tooling:</b> JUnit, Compose UI &amp; screenshot tests, Android Studio, Gradle, Git, Play Console</div>
+    </div>
+
+    <h2>Open Source</h2>
+    <ul class="os">
+      <li><b>RokuFocus (roku-focus-list)</b> — Jetpack Compose library for Roku-style fixed-focus D-pad navigation on Android TV / Fire TV — grid layouts, wrap-around, key-repeat. Published on JitPack (Apache-2.0).</li>
+      <li><b>adb-dashboard</b> — Local web dashboard (Python / FastAPI + JS) for managing Android devices via ADB — wireless pairing, screen recording, APK install, shell, live device telemetry.</li>
+    </ul>
+
+    <h2>Education</h2>
+    <div class="edu-row">
+      <span><b>Bachelor of Computer Applications (BCA)</b> — Shri Guru Ram Rai University (SGRRU)</span>
+      <span class="period">2020 – 2023 · 8.43 / 10 GPA</span>
+    </div>
+  </body>
+</html>

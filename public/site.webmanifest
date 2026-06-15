@@ -1,0 +1,20 @@
+{
+  "name": "Sourav Rawat — Senior Android Developer",
+  "short_name": "Sourav Rawat",
+  "description": "Portfolio of Sourav Rawat — Senior Android Developer (Kotlin, Jetpack Compose, KMP/CMP).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

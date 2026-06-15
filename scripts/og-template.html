@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #0a0a0b;
+        color: #ededee;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        position: relative;
+        overflow: hidden;
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1.4px, transparent 1.4px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+      }
+      .glow {
+        position: absolute;
+        top: -180px; left: 50%;
+        transform: translateX(-50%);
+        width: 760px; height: 520px;
+        background: radial-gradient(closest-side, rgba(52,211,153,0.22), transparent);
+        filter: blur(20px);
+      }
+      .wrap {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 84px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-start;
+        border: 1px solid #26262c;
+        background: rgba(17,17,20,0.6);
+        border-radius: 999px;
+        padding: 9px 18px;
+        font-size: 19px;
+        color: #9a9aa4;
+        font-family: "SF Mono", monospace;
+        margin-bottom: 30px;
+      }
+      .dot { width: 11px; height: 11px; border-radius: 50%; background: #34d399; }
+      h1 {
+        font-size: 92px;
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+      .role {
+        font-size: 40px;
+        font-weight: 700;
+        margin-top: 18px;
+        background: linear-gradient(105deg, #ededee 30%, #34d399 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        font-size: 25px;
+        color: #6a6a73;
+        font-family: "SF Mono", monospace;
+        margin-top: 16px;
+      }
+      .foot {
+        position: absolute;
+        bottom: 48px; left: 84px;
+        font-size: 22px; color: #9a9aa4;
+        font-family: "SF Mono", monospace;
+      }
+      .sr {
+        position: absolute;
+        bottom: 40px; right: 70px;
+        width: 96px; height: 96px;
+        border: 1.5px solid rgba(52,211,153,0.4);
+        border-radius: 22px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: "SF Mono", monospace;
+        font-weight: 700; font-size: 40px;
+        background: linear-gradient(120deg, #34d399, #2dd4bf);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="badge"><span class="dot"></span> Senior Android Developer</div>
+      <h1>Sourav Rawat</h1>
+      <div class="role">Building cross-platform apps &amp; SDKs</div>
+      <div class="sub">Kotlin · Jetpack Compose · KMP / CMP · Media3</div>
+    </div>
+    <div class="foot">Android · Android TV · Fire TV · iOS — one codebase</div>
+    <div class="sr">SR</div>
+  </body>
+</html>
