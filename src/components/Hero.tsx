@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, FileText } from "lucide-react";
+import { ArrowDown, ArrowUpRight, FileText, Mail } from "lucide-react";
 import { profile, socials } from "../data/profile";
 import { Avatar } from "./ui/Avatar";
 import { SocialIcon } from "./ui/SocialIcon";
@@ -109,6 +109,13 @@ export function Hero() {
                   <SocialIcon icon={s.icon} size={18} aria-hidden="true" />
                 </a>
               ))}
+              <a
+                href={`mailto:${profile.email}`}
+                aria-label="Email"
+                className="group inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+              >
+                <Mail size={18} aria-hidden="true" />
+              </a>
               <span className="ml-1 font-mono text-xs text-faint">
                 {profile.location}
               </span>

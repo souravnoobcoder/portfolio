@@ -88,14 +88,12 @@ vercel          # preview deploy
 vercel --prod   # production deploy
 ```
 
-### After deploying
+### Live URL
 
-Update the live URL in these spots so SEO / social previews point at the real
-domain (they currently use the placeholder `https://sourav-rawat.vercel.app`):
-
-- `index.html` — `<link rel="canonical">`, the `og:url` / `og:image` /
-  `twitter:image` tags
-- `public/robots.txt` and `public/sitemap.xml`
+Deployed at <https://portfolio-gilt-chi-58.vercel.app>. The canonical / OG /
+Twitter tags in `index.html`, plus `public/robots.txt` and `public/sitemap.xml`,
+point at this domain. If you later attach a custom domain, update those spots so
+SEO and social previews resolve to it.
 
 ## Notes
 

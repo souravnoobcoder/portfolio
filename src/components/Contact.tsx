@@ -1,4 +1,4 @@
-import { ArrowUpRight, FileText } from "lucide-react";
+import { ArrowUpRight, FileText, Mail } from "lucide-react";
 import { Section } from "./ui/Section";
 import { Reveal } from "./ui/Reveal";
 import { profile, socials } from "../data/profile";
@@ -25,11 +25,18 @@ export function Contact() {
           Let&apos;s build something that ships everywhere
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-muted">
-          I&apos;m {profile.available.toLowerCase()}. The fastest way to reach me
-          is LinkedIn — or take a look at my code and resume below.
+          I&apos;m {profile.available.toLowerCase()}. Drop me an email, connect on
+          LinkedIn, or take a look at my code and resume below.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`mailto:${profile.email}`}
+            className="inline-flex items-center gap-2 rounded-lg accent-gradient px-5 py-3 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
+          >
+            <Mail size={17} aria-hidden="true" />
+            Email me
+          </a>
           {socials.map((s) => (
             <a
               key={s.label}
@@ -51,7 +58,7 @@ export function Contact() {
             href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg accent-gradient px-5 py-3 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-2 px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent"
           >
             <FileText size={16} aria-hidden="true" />
             Download Resume

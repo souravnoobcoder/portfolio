@@ -1,4 +1,4 @@
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Mail } from "lucide-react";
 import { profile, socials } from "../data/profile";
 import { SocialIcon } from "./ui/SocialIcon";
 
@@ -28,6 +28,13 @@ export function Footer() {
               <SocialIcon icon={s.icon} size={16} aria-hidden="true" />
             </a>
           ))}
+          <a
+            href={`mailto:${profile.email}`}
+            aria-label="Email"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+          >
+            <Mail size={16} aria-hidden="true" />
+          </a>
           <a
             href="#top"
             aria-label="Back to top"

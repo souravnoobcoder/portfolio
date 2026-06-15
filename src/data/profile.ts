@@ -74,6 +74,7 @@ export const profile = {
     "I build high-performance Android and cross-platform apps and SDKs — one Kotlin & Compose codebase that ships across mobile, TV, and iOS.",
   summary:
     "Senior Android Developer with 4+ years building high-performance apps and cross-platform SDKs in Kotlin, Jetpack Compose, and Clean Architecture. I architected a single Compose panel SDK that runs inside the video players of tier-1 US sports & entertainment streaming platforms — serving millions of viewers — backed by a Kotlin Multiplatform data layer adopted by the iOS, tvOS, and web teams. Strong across MVVM and multi-module architecture, coroutines / Flow, Media3 / ExoPlayer playback (HLS, Widevine DRM, subtitles), in-app purchases, and partner-facing SDK delivery.",
+  email: "souravrawat77777777@gmail.com",
   resumeUrl: "/resume.pdf",
 } as const;
 
