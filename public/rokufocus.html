@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RokuFocus — Focus, fixed.</title>
+<meta name="description" content="RokuFocus — Roku-style fixed-focus D-pad navigation for Android TV & Fire TV, in pure Jetpack Compose. By Sourav Rawat.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root{
+    --bg:#000;
+    --elev:#0b0b0e;
+    --text:#f5f5f7;
+    --muted:#86868b;
+    --line:rgba(255,255,255,.08);
+    --a1:#a78bfa;
+    --a2:#e879f9;
+    --a3:#7c3aed;
+    --grad:linear-gradient(92deg,var(--a1) 0%,var(--a2) 55%,var(--a3) 100%);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    --pw:170px; --ph:250px; --pgap:20px; --ringpad:10px; --raill:56px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,Inter,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:rgba(167,139,250,.35)}
+  button{font:inherit;color:inherit;cursor:pointer}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--a1);outline-offset:2px;border-radius:6px}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;inset:0 0 auto 0;z-index:50;height:56px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 28px;background:transparent;border-bottom:1px solid transparent;
+    transition:background .5s var(--ease),border-color .5s var(--ease),backdrop-filter .5s var(--ease);
+  }
+  nav.scrolled{
+    background:rgba(8,8,10,.65);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+    border-color:var(--line);
+  }
+  .wordmark{font-weight:700;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text)}
+  .wordmark em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13.5px;transition:color .3s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{
+    color:var(--text)!important;border:1px solid rgba(255,255,255,.18);
+    padding:7px 16px;border-radius:99px;transition:border-color .3s,background .3s;
+  }
+  .nav-cta:hover{border-color:var(--a1);background:rgba(167,139,250,.1)}
+  @media(max-width:700px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;position:relative;padding:120px 24px 80px;overflow:hidden;
+  }
+  .orb{
+    position:absolute;width:60vmax;height:60vmax;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,rgba(124,58,237,.32),rgba(232,121,249,.10) 45%,transparent 70%);
+    filter:blur(60px);top:-12vmax;left:50%;transform:translateX(-50%);
+    animation:drift 14s ease-in-out infinite alternate;pointer-events:none;
+  }
+  @keyframes drift{
+    from{transform:translateX(-58%) translateY(0) scale(1)}
+    to{transform:translateX(-42%) translateY(6vmax) scale(1.12)}
+  }
+  .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--a1);font-weight:600;margin-bottom:22px}
+  .hero h1{font-size:clamp(58px,10vw,132px);font-weight:700;letter-spacing:-.035em;line-height:.98}
+  .hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{max-width:600px;margin:28px auto 0;color:var(--muted);font-size:clamp(17px,2vw,21px);line-height:1.5}
+  .hero .btns{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    text-decoration:none;font-size:15px;font-weight:600;padding:13px 28px;border-radius:99px;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s,border-color .3s;
+    display:inline-block;border:0;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-fill{background:var(--grad);color:#fff;box-shadow:0 8px 32px rgba(124,58,237,.35)}
+  .btn-fill:hover{box-shadow:0 14px 44px rgba(124,58,237,.5)}
+  .btn-ghost{color:var(--text);border:1px solid rgba(255,255,255,.18);background:transparent}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.4)}
+  .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .chip{
+    font-size:12.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);
+    padding:7px 15px;border-radius:99px;background:rgba(255,255,255,.03);
+  }
+  .chip b{color:var(--text);font-weight:600}
+  .scroll-hint{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-hint::after{
+    content:"";width:1px;height:34px;background:linear-gradient(var(--a1),transparent);
+    animation:hint 1.8s var(--ease) infinite;
+  }
+  @keyframes hint{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .rise{opacity:0;transform:translateY(34px);filter:blur(8px);animation:rise 1.1s var(--ease) forwards}
+  @keyframes rise{to{opacity:1;transform:none;filter:blur(0)}}
+  .d1{animation-delay:.05s}.d2{animation-delay:.18s}.d3{animation-delay:.34s}.d4{animation-delay:.5s}.d5{animation-delay:.64s}.d6{animation-delay:.8s}
+
+  /* ---------- scroll-lit statement ---------- */
+  .statement{padding:22vh 24px;display:flex;justify-content:center}
+  .statement p{max-width:880px;font-size:clamp(30px,4.6vw,58px);font-weight:600;letter-spacing:-.025em;line-height:1.18}
+  .statement .w{color:rgba(255,255,255,.13);transition:color .45s ease}
+  .statement .w.lit{color:var(--text)}
+  .statement .w.key.lit{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- pinned showcase ---------- */
+  .showcase{height:360vh;position:relative}
+  .stage{
+    position:sticky;top:0;height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;overflow:hidden;gap:26px;padding:0 16px;
+  }
+  .stage-glow{
+    position:absolute;width:120vmin;height:60vmin;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(124,58,237,.18),transparent 65%);
+    filter:blur(40px);pointer-events:none;
+  }
+  .remote{display:flex;gap:8px;align-items:center}
+  .rk{
+    min-width:38px;height:34px;padding:0 12px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--muted);font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .18s var(--ease),background .18s,color .18s,border-color .18s,box-shadow .18s;
+  }
+  .rk.hit{
+    background:var(--grad);color:#fff;border-color:transparent;transform:scale(1.12);
+    box-shadow:0 4px 18px rgba(124,58,237,.5);
+  }
+  .tv{
+    position:relative;width:min(980px,94vw);aspect-ratio:16/9;border-radius:26px;
+    background:linear-gradient(180deg,#121217 0%,#08080b 100%);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 50px 120px -20px rgba(0,0,0,.9),0 0 120px rgba(124,58,237,.12),inset 0 1px 0 rgba(255,255,255,.06);
+    overflow:hidden;
+  }
+  .tv-ui{position:absolute;inset:0;display:flex;align-items:center;padding-left:var(--raill)}
+  .rail-wrap{position:relative;width:100%}
+  .row-label{position:absolute;bottom:100%;left:2px;margin-bottom:24px;font-size:13px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .rail-clip{position:relative;height:calc(var(--ph)*1.16);display:flex;align-items:center}
+  .rail{display:flex;gap:var(--pgap);will-change:transform}
+  .tv-chrome{
+    position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:24px;
+    padding:20px 28px;font-size:13px;font-weight:600;color:rgba(255,255,255,.32);
+  }
+  .tv-chrome .logo{width:20px;height:20px;border-radius:6px;background:var(--grad);margin-right:4px;opacity:.85}
+  .tv-chrome .active{color:rgba(255,255,255,.9)}
+  .tv-chrome time{margin-left:auto;font-weight:500;color:rgba(255,255,255,.28)}
+  .ghost-row{position:absolute;left:var(--raill);right:0;bottom:24px;opacity:.2;pointer-events:none}
+  .ghost-row .g-label{font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .ghost-row .g-rail{display:flex;gap:var(--pgap)}
+  .ghost-row .g{width:var(--pw);height:36px;border-radius:10px;background:rgba(255,255,255,.12);flex:none}
+  .poster{
+    width:var(--pw);height:var(--ph);border-radius:14px;flex:none;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:14px;will-change:transform,filter,opacity;
+  }
+  .poster::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.55))}
+  .poster span{position:relative;z-index:1;font-size:14px;font-weight:700;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+  .ring{
+    position:absolute;left:calc(var(--raill) + var(--pw)/2);top:50%;
+    width:calc(var(--pw)*1.08 + var(--ringpad)*2);
+    height:calc(var(--ph)*1.08 + var(--ringpad)*2);
+    transform:translate(-50%,-50%);
+    border-radius:24px;pointer-events:none;z-index:5;
+    border:3px solid #fff;
+    box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 16px rgba(167,139,250,.38),0 16px 44px rgba(124,58,237,.22);
+    animation:breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 12px rgba(167,139,250,.3),0 16px 40px rgba(124,58,237,.18)}
+    50%{box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 22px rgba(167,139,250,.5),0 16px 48px rgba(124,58,237,.28)}
+  }
+  .captions{position:relative;height:64px;width:min(700px,90vw);text-align:center}
+  .cap{
+    position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;
+    opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease);
+  }
+  .cap.on{opacity:1;transform:none}
+  .cap b{font-size:clamp(20px,2.6vw,28px);font-weight:700;letter-spacing:-.02em}
+  .cap small{color:var(--muted);font-size:15px}
+
+  /* ---------- sections ---------- */
+  .section{padding:140px 24px;max-width:1100px;margin:0 auto}
+  .sec-head{max-width:720px;margin-bottom:56px}
+  .sec-head h2{font-size:clamp(34px,5vw,56px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+  .sec-head h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sec-head p{color:var(--muted);font-size:18px;margin-top:18px;line-height:1.55}
+
+  /* ---------- comparison ---------- */
+  .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.vs-grid{grid-template-columns:1fr}}
+  .vs-panel{border:1px solid var(--line);border-radius:20px;background:var(--elev);padding:26px 24px;overflow:hidden}
+  .vs-tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:6px 14px;border-radius:99px;border:1px solid var(--line);color:var(--muted);
+  }
+  .vs-tag.roku{background:var(--grad);color:#fff;border-color:transparent}
+  .vs-clip{position:relative;height:138px;display:flex;align-items:center;margin-top:22px;overflow:hidden;border-radius:12px}
+  .vs-rail{display:flex;gap:10px;will-change:transform}
+  .vs-card{width:76px;height:108px;border-radius:10px;flex:none;transition:filter .3s,transform .3s}
+  .vs-card.on{transform:scale(1.05)}
+  .vs-ring{
+    position:absolute;left:0;top:50%;width:88px;height:120px;border-radius:14px;pointer-events:none;
+    border:2.5px solid #fff;box-shadow:0 0 14px rgba(167,139,250,.4),0 8px 22px rgba(0,0,0,.5);
+  }
+  .vs-note{margin-top:18px;font-size:14.5px;color:var(--muted);line-height:1.55}
+  .vs-note b{color:var(--text)}
+
+  /* ---------- playground ---------- */
+  .pg-panel{
+    position:relative;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+    background:linear-gradient(180deg,#101016,#0a0a0d);padding:36px 26px 28px;
+    box-shadow:0 40px 100px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .pg-label{font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
+  .pg-clip{position:relative;height:118px;display:flex;align-items:center}
+  .pg-rail{display:flex;gap:12px;will-change:transform}
+  .pg-card{
+    width:152px;height:86px;border-radius:12px;flex:none;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:10px;filter:brightness(.6) saturate(.8);
+    transition:filter .3s,transform .3s;
+  }
+  .pg-card::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.5))}
+  .pg-card span{position:relative;z-index:1;font-size:12px;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  .pg-card.on{filter:brightness(1) saturate(1.1);transform:scale(1.05)}
+  .pg-card.clicked{animation:clickpulse .35s var(--ease)}
+  @keyframes clickpulse{0%{transform:scale(1.05)}40%{transform:scale(.96)}100%{transform:scale(1.05)}}
+  .pg-ring{
+    position:absolute;left:0;top:50%;width:168px;height:102px;border-radius:16px;pointer-events:none;z-index:4;
+    border:3px solid #fff;
+    box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 14px rgba(167,139,250,.4),0 12px 30px rgba(124,58,237,.2);
+  }
+  .pg-ring.edge{border-color:#f0abfc;box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 28px rgba(232,121,249,.8)}
+  .pg-foot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:16px}
+  .dpad{display:flex;gap:8px}
+  .dbtn{
+    width:46px;height:42px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);font-size:15px;font-weight:700;
+    transition:border-color .2s,background .2s,transform .15s;
+  }
+  .dbtn:hover{border-color:var(--a1);background:rgba(124,58,237,.16)}
+  .dbtn:active{transform:scale(.92)}
+  .readout{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .readout b{color:var(--a1);font-weight:600}
+  .readout .toast{margin-left:14px;color:#7ee787;opacity:0;transition:opacity .3s}
+  .readout .toast.on{opacity:1}
+  .hintline{font-size:13.5px;color:var(--muted);margin-top:18px}
+  kbd{
+    font:600 11.5px var(--mono);border:1px solid var(--line);border-bottom-width:2.5px;border-radius:6px;
+    padding:3px 8px;background:rgba(255,255,255,.05);color:var(--text);margin:0 2px;
+  }
+  .controls{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px}
+  .ctl-label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:11px;padding:4px;background:rgba(255,255,255,.03);gap:4px}
+  .seg button{
+    border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:600;
+    padding:7px 16px;border-radius:8px;transition:background .25s,color .25s;
+  }
+  .seg button.on{background:rgba(124,58,237,.3);color:#fff}
+
+  /* ---------- features ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .card{
+    position:relative;border-radius:20px;padding:28px 26px;background:var(--elev);
+    border:1px solid var(--line);overflow:hidden;
+    transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+    background:linear-gradient(135deg,rgba(167,139,250,.7),rgba(232,121,249,.25),transparent 60%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:0;transition:opacity .45s;
+  }
+  .card:hover{transform:translateY(-7px);box-shadow:0 24px 60px -18px rgba(124,58,237,.35)}
+  .card:hover::before{opacity:1}
+  .card .ic{
+    width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:rgba(124,58,237,.16);margin-bottom:20px;
+  }
+  .card .ic svg{width:21px;height:21px;stroke:var(--a1);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .card h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
+  .card p{color:var(--muted);font-size:14.5px;line-height:1.55}
+  .card p code{font-family:var(--mono);font-size:12.5px;color:var(--a1)}
+
+  /* ---------- code / tabs ---------- */
+  .tabs{
+    display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:13px;
+    background:rgba(255,255,255,.03);width:max-content;margin-bottom:18px;max-width:100%;overflow-x:auto;
+  }
+  .tabs button{
+    border:0;background:transparent;color:var(--muted);font-size:13.5px;font-weight:600;
+    padding:9px 20px;border-radius:9px;white-space:nowrap;transition:background .25s,color .25s;
+  }
+  .tabs button.on{background:rgba(124,58,237,.28);color:#fff}
+  .codewrap{
+    border-radius:22px;border:1px solid var(--line);background:var(--elev);overflow:hidden;
+    box-shadow:0 40px 100px -30px rgba(0,0,0,.8);
+  }
+  .codebar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .dot:nth-child(1){background:#ff5f57}.dot:nth-child(2){background:#febc2e}.dot:nth-child(3){background:#28c840}
+  .codebar span{margin-left:8px}
+  pre{padding:26px 24px;font-family:var(--mono);font-size:14px;line-height:1.8;overflow-x:auto;color:#d4d4d8}
+  pre .k{color:var(--a1)}pre .s{color:#7ee787}pre .c{color:#5b5b63}pre .f{color:#7dd3fc}pre .n{color:#fbbf24}
+  .tabpane{display:none}
+  .tabpane.on{display:block;animation:fadein .45s var(--ease)}
+  @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- stats ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;text-align:center}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat b{
+    display:block;font-size:clamp(44px,6vw,76px);font-weight:700;letter-spacing:-.03em;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat span{color:var(--muted);font-size:14px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+
+  /* ---------- cta / footer ---------- */
+  .cta{text-align:center;padding:180px 24px 160px;position:relative;overflow:hidden}
+  .cta .orb{top:auto;bottom:-40vmax;opacity:.8}
+  .cta h2{font-size:clamp(46px,8vw,104px);font-weight:700;letter-spacing:-.035em;line-height:1}
+  .cta h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cta p{color:var(--muted);font-size:19px;margin:24px auto 42px;max-width:520px}
+  footer{
+    border-top:1px solid var(--line);padding:34px 28px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;color:var(--muted);font-size:13.5px;
+  }
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(36px);filter:blur(6px);
+    transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease);
+    transition-delay:calc(var(--i,0)*90ms);
+  }
+  .rv.in{opacity:1;transform:none;filter:blur(0)}
+
+  @media(max-width:900px){.ghost-row{display:none}}
+  @media(max-width:760px){
+    :root{--pw:92px;--ph:136px;--pgap:12px;--raill:26px}
+    .tv-chrome{display:none}
+    .row-label{margin-bottom:14px}
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+    .rise,.rv{opacity:1;transform:none;filter:none}
+    .statement .w{color:var(--text)}
+    .showcase{height:auto;padding:120px 0}
+    .stage{position:static;height:auto;padding:40px 16px}
+    .cap{position:static;opacity:1;transform:none}
+    .scroll-hint,.remote{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="wordmark" href="/">Roku<em>Focus</em></a>
+  <div class="nav-links">
+    <a href="#demo">Demo</a>
+    <a href="#why">Why</a>
+    <a href="#try">Try it</a>
+    <a href="#install">Install</a>
+    <a class="nav-cta" href="https://github.com/souravnoobcoder/roku-focus-list" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="orb"></div>
+  <div class="eyebrow rise d1">RokuFocus · Android TV &amp; Fire TV</div>
+  <h1 class="rise d2">Focus, <span class="g">fixed.</span></h1>
+  <p class="rise d3">Roku-style fixed-focus D-pad navigation, in pure Jetpack Compose. The highlight stays locked. The content glides beneath it.</p>
+  <div class="btns rise d4">
+    <a class="btn btn-fill" href="#install">Get started</a>
+    <a class="btn btn-ghost" href="#try">Try it live</a>
+  </div>
+  <div class="chips rise d5">
+    <span class="chip"><b>v1.0.0</b> on JitPack</span>
+    <span class="chip">Apache 2.0</span>
+    <span class="chip">minSdk <b>24</b></span>
+    <span class="chip"><b>0</b> Material deps</span>
+  </div>
+  <div class="scroll-hint rise d6">Scroll</div>
+</header>
+
+<!-- SCROLL-LIT STATEMENT -->
+<section class="statement" id="statement">
+  <p id="words">Android TV moves focus to every item. Roku never does. The highlight stays <em>locked.</em> The content <em>glides.</em> RokuFocus brings that to <em>Compose.</em></p>
+</section>
+
+<!-- PINNED SHOWCASE -->
+<section class="showcase" id="demo">
+  <div class="stage">
+    <div class="stage-glow"></div>
+    <div class="remote" aria-hidden="true">
+      <span class="rk" id="rkL">◀</span><span class="rk">OK</span><span class="rk" id="rkR">▶</span>
+    </div>
+    <div class="tv">
+      <div class="tv-chrome">
+        <div class="logo"></div>
+        <span class="active">For You</span><span>Movies</span><span>Series</span><span>Live</span>
+        <time>9:41 PM</time>
+      </div>
+      <div class="tv-ui">
+        <div class="rail-wrap">
+          <div class="row-label">Continue watching</div>
+          <div class="rail-clip">
+            <div class="rail" id="rail"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ghost-row">
+        <div class="g-label">Trending now</div>
+        <div class="g-rail"><div class="g"></div><div class="g"></div><div class="g"></div><div class="g"></div><div class="g"></div><div class="g"></div></div>
+      </div>
+      <div class="ring"></div>
+    </div>
+    <div class="captions">
+      <div class="cap on"><b>The rail moves. The ring doesn't.</b><small>One focusable container — items are never individually focused.</small></div>
+      <div class="cap"><b>Hold right. It accelerates.</b><small>Key-repeat throttling that speeds up after three presses.</small></div>
+      <div class="cap"><b>A highlight on the GPU.</b><small>Positioned with graphicsLayer — translation only, no re-layout.</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY / COMPARISON -->
+<section class="section" id="why">
+  <div class="sec-head rv">
+    <h2>Two focus models. <span class="g">One feels right.</span></h2>
+    <p>Compose TV's default moves focus to each item, so the whole row jumps around. RokuFocus flips it — the same pattern Roku and every major streaming app ships.</p>
+  </div>
+  <div class="vs-grid">
+    <div class="vs-panel rv" style="--i:0">
+      <span class="vs-tag">Default Compose TV</span>
+      <div class="vs-clip">
+        <div class="vs-rail" id="vsLRail"></div>
+        <div class="vs-ring" id="vsLRing"></div>
+      </div>
+      <p class="vs-note">Focus <b>chases items</b> across the screen, then the list lurches to catch up. Your eye has to track two moving things.</p>
+    </div>
+    <div class="vs-panel rv" style="--i:1">
+      <span class="vs-tag roku">RokuFocus</span>
+      <div class="vs-clip">
+        <div class="vs-rail" id="vsRRail"></div>
+        <div class="vs-ring" id="vsRRing"></div>
+      </div>
+      <p class="vs-note">The highlight <b>never moves</b>. Content glides under a fixed anchor — predictable, cinematic, easy to track from ten feet away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYGROUND -->
+<section class="section" id="try">
+  <div class="sec-head rv">
+    <h2>Don't take our word. <span class="g">Take the remote.</span></h2>
+    <p>A live RokuFocus row, wired to your keyboard. Every control below maps to a real <span style="font-family:var(--mono);font-size:15px;color:var(--a1)">RokuFocusConfig</span> parameter.</p>
+  </div>
+  <div class="pg-panel rv" id="pgPanel">
+    <div class="pg-label">Up next</div>
+    <div class="pg-clip">
+      <div class="pg-rail" id="pgRail"></div>
+      <div class="pg-ring" id="pgRing"></div>
+    </div>
+    <div class="pg-foot">
+      <div class="dpad">
+        <button class="dbtn" id="pgLeft" aria-label="Move left">◀</button>
+        <button class="dbtn" id="pgOk" aria-label="Select">OK</button>
+        <button class="dbtn" id="pgRight" aria-label="Move right">▶</button>
+      </div>
+      <div class="readout">state.selectedIndex = <b id="pgIdx">0</b><span class="toast" id="pgToast"></span></div>
+    </div>
+    <div class="controls">
+      <div>
+        <div class="ctl-label">highlightAnimationSpec</div>
+        <div class="seg" data-k="preset">
+          <button data-v="default" class="on">Default</button>
+          <button data-v="fast">Fast</button>
+          <button data-v="smooth">Smooth</button>
+        </div>
+      </div>
+      <div>
+        <div class="ctl-label">wrapAround</div>
+        <div class="seg" data-k="wrap">
+          <button data-v="off" class="on">false</button>
+          <button data-v="on">true</button>
+        </div>
+      </div>
+      <div>
+        <div class="ctl-label">focusSlot</div>
+        <div class="seg" data-k="slot">
+          <button data-v="0" class="on">0</button>
+          <button data-v="1">1</button>
+          <button data-v="2">2</button>
+        </div>
+      </div>
+    </div>
+    <p class="hintline">Click the demo, then press <kbd>←</kbd><kbd>→</kbd> to navigate · <kbd>Enter</kbd> to select. Hit an edge with wrap off to feel the boundary.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="sec-head rv">
+    <h2>Everything Leanback should have been. <span class="g">In Compose.</span></h2>
+    <p>No Views, no fragments, no fighting the focus engine. Drop it in and ship.</p>
+  </div>
+  <div class="grid">
+    <div class="card rv" style="--i:0">
+      <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="9" cy="12" r="2.5"/></svg></div>
+      <h3>Fixed-focus highlight</h3>
+      <p>Content scrolls under a stationary ring — selection is tracked in state, not the Compose focus system.</p>
+    </div>
+    <div class="card rv" style="--i:1">
+      <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="13" y="3" width="8" height="6" rx="2"/><rect x="3" y="15" width="8" height="6" rx="2"/><rect x="13" y="11" width="8" height="10" rx="2"/></svg></div>
+      <h3>Full OTT grids</h3>
+      <p><code>RokuLazyColumn</code> morphs one highlight across rows of different card sizes — X, Y, width, and height all animate.</p>
+    </div>
+    <div class="card rv" style="--i:2">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h12M11 6l6 6-6 6M19 5v14"/></svg></div>
+      <h3>Key-repeat acceleration</h3>
+      <p>Hold the D-pad: presses are throttled, then accelerate after three in a row. Long lists stop feeling long.</p>
+    </div>
+    <div class="card rv" style="--i:3">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M17 3 21 7l-4 4M21 7H8a5 5 0 0 0 0 10h2"/></svg></div>
+      <h3>Wrap-around + haptics</h3>
+      <p>Last to first with one flag. Boundary hits vibrate, so the edge is something users feel, not guess.</p>
+    </div>
+    <div class="card rv" style="--i:4">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+      <h3>Custom highlight</h3>
+      <p>The ring is a <code>BoxScope</code> lambda. Keep the default, restyle it, or replace it with anything you can compose.</p>
+    </div>
+    <div class="card rv" style="--i:5">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v6c0 4.4 3.4 8 8 8s8-3.6 8-8V7l-8-4z"/></svg></div>
+      <h3>Zero Material</h3>
+      <p>Only Foundation, UI, Animation, and Runtime. Works with any design system, back to minSdk 24.</p>
+    </div>
+  </div>
+</section>
+
+<!-- API -->
+<section class="section" id="api">
+  <div class="sec-head rv">
+    <h2>An API that reads like <span class="g">the layout it builds.</span></h2>
+    <p>Rows, grids, and config — straight from the library.</p>
+  </div>
+  <div class="rv">
+    <div class="tabs" id="apitabs">
+      <button data-t="paneRow" class="on">RokuLazyRow</button>
+      <button data-t="paneGrid">RokuLazyColumn</button>
+      <button data-t="paneCfg">RokuFocusConfig</button>
+    </div>
+    <div class="codewrap">
+      <div class="codebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>HomeScreen.kt</span></div>
+      <div class="tabpane on" id="paneRow">
+<pre><span class="c">// A fixed-focus row. Item width is auto-measured.</span>
+<span class="f">RokuLazyRow</span>(
+    itemSpacing = <span class="n">14</span>.dp,
+    onItemClicked = { index -> <span class="f">play</span>(index) }
+) {
+    <span class="f">items</span>(movies) { movie, isFocused ->
+        <span class="f">MovieCard</span>(movie, isFocused)
+    }
+}</pre>
+      </div>
+      <div class="tabpane" id="paneGrid">
+<pre><span class="c">// A full OTT home screen: mixed card sizes, one morphing highlight.</span>
+<span class="f">RokuLazyColumn</span> {
+    <span class="f">row</span>(itemWidth = <span class="n">580</span>.dp, itemHeight = <span class="n">310</span>.dp,
+        header = { <span class="f">Text</span>(<span class="s">"Hero"</span>) }) {
+        <span class="f">items</span>(heroMovies) { m, focused -> <span class="f">BannerCard</span>(m, focused) }
+    }
+    <span class="f">row</span>(itemWidth = <span class="n">220</span>.dp, itemHeight = <span class="n">140</span>.dp,
+        header = { <span class="f">Text</span>(<span class="s">"Trending Now"</span>) }) {
+        <span class="f">items</span>(trending) { m, focused -> <span class="f">MovieCard</span>(m, focused) }
+    }
+}</pre>
+      </div>
+      <div class="tabpane" id="paneCfg">
+<pre><span class="c">// Tune the feel — globally or per component.</span>
+<span class="k">val</span> config = <span class="f">RokuFocusConfig</span>(
+    highlightAnimationSpec = RokuAnimationSpec.Smooth,
+    keyRepeatDelayMs = <span class="n">150L</span>,
+    keyRepeatAccelAfter = <span class="n">3</span>,   <span class="c">// speed up after 3 presses</span>
+    keyRepeatFastDelayMs = <span class="n">50L</span>,
+    wrapAround = <span class="k">true</span>,
+    hapticFeedback = <span class="k">true</span>
+)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section">
+  <div class="stats" id="stats">
+    <div class="stat rv" style="--i:0"><b data-n="24">0</b><span>min SDK</span></div>
+    <div class="stat rv" style="--i:1"><b data-n="100" data-suffix="%">0</b><span>Kotlin</span></div>
+    <div class="stat rv" style="--i:2"><b data-n="0">0</b><span>Material deps</span></div>
+    <div class="stat rv" style="--i:3"><b data-n="1">0</b><span>focusable per row</span></div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="section" id="install">
+  <div class="sec-head rv">
+    <h2>Install in <span class="g">seconds.</span></h2>
+    <p>Add JitPack, add the dependency, press right.</p>
+  </div>
+  <div class="codewrap rv">
+    <div class="codebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>settings.gradle.kts · build.gradle.kts</span></div>
+<pre><span class="c">// settings.gradle.kts</span>
+dependencyResolutionManagement {
+    repositories {
+        <span class="f">google</span>()
+        <span class="f">mavenCentral</span>()
+        maven { url = <span class="f">uri</span>(<span class="s">"https://jitpack.io"</span>) }
+    }
+}
+
+<span class="c">// build.gradle.kts</span>
+<span class="k">dependencies</span> {
+    <span class="f">implementation</span>(<span class="s">"com.github.souravnoobcoder:roku-focus-list:1.0.0"</span>)
+}</pre>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="orb"></div>
+  <h2 class="rv">Make the remote<br><span class="g">feel right.</span></h2>
+  <p class="rv" style="--i:1">Open source. Apache 2.0. Built for the ten-foot experience.</p>
+  <div class="btns rv" style="--i:2">
+    <a class="btn btn-fill" href="https://github.com/souravnoobcoder/roku-focus-list" target="_blank" rel="noopener">View on GitHub</a>
+    <a class="btn btn-ghost" href="/">Back to portfolio</a>
+  </div>
+</section>
+
+<footer>
+  <div>RokuFocus — built by Sourav Rawat</div>
+  <div><a href="https://github.com/souravnoobcoder/roku-focus-list" target="_blank" rel="noopener">GitHub</a> · Apache 2.0 · <a href="/">Portfolio</a></div>
+</footer>
+
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const hues=[[262,310],[200,250],[20,45],[330,275],[150,190],[290,330],[35,15],[230,265],[190,160],[280,220],[15,340],[210,180]];
+  const grad=(i,deg)=>{const[h1,h2]=hues[i%hues.length];return`linear-gradient(${deg||160}deg,hsl(${h1} 65% 38%),hsl(${h2} 70% 16%))`};
+
+  /* ----- showcase posters ----- */
+  const titles=["Midnight Run","Orbit","Paper Skies","Static","Wolfpack","Neon Tide","Driftwood","After Hours","Northbound","Glasshouse"];
+  const rail=$('#rail');
+  titles.forEach((t,i)=>{
+    const d=document.createElement('div');
+    d.className='poster';d.style.background=grad(i);
+    d.innerHTML=`<span>${t}</span>`;rail.appendChild(d);
+  });
+  const posters=[...rail.children];
+
+  /* ----- nav ----- */
+  const nav=$('#nav');
+  const onNav=()=>nav.classList.toggle('scrolled',scrollY>40);
+  addEventListener('scroll',onNav,{passive:true});onNav();
+
+  /* ----- reveals ----- */
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+  }),{threshold:.18});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  /* ----- statement words ----- */
+  const stmt=$('#words');
+  stmt.innerHTML=stmt.innerHTML.trim().split(/\s+/).map(w=>{
+    const key=w.startsWith('<em>');
+    return`<span class="w${key?' key':''}">${w.replace(/<\/?em>/g,'')}</span>`;
+  }).join(' ');
+  const words=[...stmt.querySelectorAll('.w')];
+
+  /* ----- stats ----- */
+  const easeOut=t=>1-Math.pow(1-t,3);
+  const statIO=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;statIO.unobserve(e.target);
+    e.target.querySelectorAll('b').forEach(b=>{
+      const end=+b.dataset.n,suf=b.dataset.suffix||'';
+      if(rm){b.textContent=end+suf;return;}
+      const t0=performance.now(),dur=1400;
+      (function tick(now){
+        const p=clamp((now-t0)/dur,0,1);
+        b.textContent=Math.round(easeOut(p)*end)+suf;
+        if(p<1)requestAnimationFrame(tick);
+      })(t0);
+    });
+  }),{threshold:.4});
+  statIO.observe($('#stats'));
+
+  /* ----- API tabs ----- */
+  const tabwrap=$('#apitabs');
+  tabwrap.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    tabwrap.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.t));
+  });
+
+  /* ----- comparison panels ----- */
+  const VSN=12,VSW=76,VSGAP=10,VSSTEP=VSW+VSGAP;
+  const vsLRail=$('#vsLRail'),vsRRail=$('#vsRRail'),vsLRing=$('#vsLRing'),vsRRing=$('#vsRRing');
+  const vsCardsL=[],vsCardsR=[];
+  for(let i=0;i<VSN;i++){
+    const a=document.createElement('div');a.className='vs-card';a.style.background=grad(i,150);
+    const b=a.cloneNode();vsLRail.appendChild(a);vsRRail.appendChild(b);
+    vsCardsL.push(a);vsCardsR.push(b);
+  }
+  vsRRing.style.transform=`translate(calc(${VSW/2}px - 50%), -50%)`;
+  let vsI=0;
+  function vsApply(noAnim){
+    const ringSlot=Math.min(vsI,3),shiftL=Math.max(0,vsI-3);
+    vsLRing.style.transition=noAnim?'none':'transform .14s ease-out';
+    vsLRail.style.transition=vsRRail.style.transition=noAnim?'none':'transform .34s cubic-bezier(.16,1,.3,1)';
+    vsLRing.style.transform=`translate(calc(${ringSlot*VSSTEP+VSW/2}px - 50%), -50%)`;
+    vsLRail.style.transform=`translate3d(${-shiftL*VSSTEP}px,0,0)`;
+    vsRRail.style.transform=`translate3d(${-vsI*VSSTEP}px,0,0)`;
+    vsCardsL.forEach((c,i)=>c.classList.toggle('on',i===vsI));
+    vsCardsR.forEach((c,i)=>c.classList.toggle('on',i===vsI));
+  }
+  vsApply(true);
+  if(!rm){
+    let vsOn=false;
+    new IntersectionObserver(es=>es.forEach(e=>vsOn=e.isIntersecting),{threshold:.3}).observe($('#why'));
+    setInterval(()=>{
+      if(!vsOn||document.hidden)return;
+      vsI=(vsI+1)%8;
+      vsApply(vsI===0);
+    },950);
+  }
+
+  /* ----- playground ----- */
+  const PGN=8,PGW=152,PGH=86,PGGAP=12,PGSTEP=PGW+PGGAP;
+  const pgRail=$('#pgRail'),pgRing=$('#pgRing'),pgPanel=$('#pgPanel'),
+        pgIdxOut=$('#pgIdx'),pgToast=$('#pgToast'),pgClipEl=pgPanel.querySelector('.pg-clip');
+  const pgCards=[];
+  for(let i=0;i<PGN;i++){
+    const d=document.createElement('div');
+    d.className='pg-card';d.style.background=grad(i+3,140);
+    d.innerHTML=`<span>EP ${String(i+1).padStart(2,'0')}</span>`;
+    pgRail.appendChild(d);pgCards.push(d);
+  }
+  const pg={idx:0,slot:0,wrap:false,dur:300,ease:'cubic-bezier(.4,0,.2,1)'};
+  function pgVisible(){return Math.max(1,Math.floor((pgClipEl.clientWidth+PGGAP)/PGSTEP));}
+  function pgRender(animate=true){
+    const vis=pgVisible();
+    const maxShift=Math.max(0,PGN-vis);
+    const shift=clamp(pg.idx-pg.slot,0,maxShift);
+    const ringSlot=pg.idx-shift;
+    const t=(animate&&!rm)?`transform ${pg.dur}ms ${pg.ease}`:'none';
+    pgRail.style.transition=t;pgRing.style.transition=t;
+    pgRail.style.transform=`translate3d(${-shift*PGSTEP}px,0,0)`;
+    pgRing.style.transform=`translate(calc(${ringSlot*PGSTEP+PGW/2}px - 50%), -50%)`;
+    pgCards.forEach((c,i)=>c.classList.toggle('on',i===pg.idx));
+    pgIdxOut.textContent=pg.idx;
+  }
+  let edgeT,toastT;
+  function pgEdge(){
+    pgRing.classList.add('edge');
+    clearTimeout(edgeT);edgeT=setTimeout(()=>pgRing.classList.remove('edge'),220);
+  }
+  function pgMove(d){
+    let n=pg.idx+d;
+    if(n<0||n>=PGN){
+      if(pg.wrap)n=(n+PGN)%PGN;
+      else return pgEdge();
+    }
+    pg.idx=n;pgRender();
+  }
+  function pgClick(){
+    const c=pgCards[pg.idx];
+    c.classList.remove('clicked');void c.offsetWidth;c.classList.add('clicked');
+    pgToast.textContent=`onItemClicked(${pg.idx})`;
+    pgToast.classList.add('on');
+    clearTimeout(toastT);toastT=setTimeout(()=>pgToast.classList.remove('on'),1200);
+  }
+  $('#pgLeft').addEventListener('click',()=>pgMove(-1));
+  $('#pgRight').addEventListener('click',()=>pgMove(1));
+  $('#pgOk').addEventListener('click',pgClick);
+  let pgActive=false;
+  new IntersectionObserver(es=>es.forEach(e=>pgActive=e.isIntersecting&&e.intersectionRatio>=.35),
+    {threshold:[0,.35,1]}).observe($('#try'));
+  addEventListener('keydown',e=>{
+    if(!pgActive)return;
+    if(e.key==='ArrowRight'){e.preventDefault();pgMove(1);}
+    else if(e.key==='ArrowLeft'){e.preventDefault();pgMove(-1);}
+    else if(e.key==='Enter'){e.preventDefault();pgClick();}
+  });
+  document.querySelectorAll('.seg').forEach(seg=>{
+    seg.addEventListener('click',e=>{
+      const b=e.target.closest('button');if(!b)return;
+      seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+      const k=seg.dataset.k,v=b.dataset.v;
+      if(k==='preset'){
+        if(v==='fast'){pg.dur=150;pg.ease='cubic-bezier(.4,0,.2,1)'}
+        else if(v==='smooth'){pg.dur=420;pg.ease='cubic-bezier(.34,1.45,.64,1)'}
+        else{pg.dur=300;pg.ease='cubic-bezier(.4,0,.2,1)'}
+      }
+      if(k==='wrap')pg.wrap=v==='on';
+      if(k==='slot'){pg.slot=+v;pgRender();}
+    });
+  });
+  addEventListener('resize',()=>pgRender(false));
+  pgRender(false);
+
+  /* ----- reduced motion: static fallbacks, then stop ----- */
+  if(rm){words.forEach(w=>w.classList.add('lit'));return;}
+
+  /* ----- smoothed scroll loop: statement + showcase ----- */
+  const showcase=document.querySelector('.showcase');
+  const caps=[...document.querySelectorAll('.cap')];
+  const stmtSec=$('#statement');
+  const rkL=$('#rkL'),rkR=$('#rkR');
+  let smooth=scrollY,lastCur=0;
+  const hitT={};
+  function pulse(el,id){
+    el.classList.add('hit');
+    clearTimeout(hitT[id]);hitT[id]=setTimeout(()=>el.classList.remove('hit'),220);
+  }
+  const css=getComputedStyle(document.documentElement);
+  let PW,GAP;
+  const measure=()=>{
+    PW=parseFloat(css.getPropertyValue('--pw'));
+    GAP=parseFloat(css.getPropertyValue('--pgap'));
+  };
+  measure();addEventListener('resize',measure);
+
+  function frame(){
+    smooth=lerp(smooth,scrollY,0.12);
+    if(Math.abs(smooth-scrollY)<0.1)smooth=scrollY;
+
+    const r=stmtSec.getBoundingClientRect();
+    const sp=clamp((innerHeight*0.85-r.top)/(r.height+innerHeight*0.45),0,1);
+    const lit=Math.floor(sp*words.length);
+    words.forEach((w,i)=>w.classList.toggle('lit',i<lit));
+
+    const sr=showcase.getBoundingClientRect();
+    const total=sr.height-innerHeight;
+    const p=clamp(-sr.top/total,0,1);
+    const n=posters.length;
+    const idx=p*(n-1);
+    rail.style.transform=`translate3d(${-idx*(PW+GAP)}px,0,0)`;
+    posters.forEach((el,i)=>{
+      const rel=i-idx;
+      const t=clamp(1-Math.abs(rel),0,1);
+      el.style.transform=`scale(${1+0.08*t}) translateZ(0)`;
+      el.style.filter=`brightness(${0.6+0.4*t}) saturate(${0.75+0.35*t})`;
+      el.style.opacity=rel<-0.5?clamp(1+(rel+0.5)*1.4,0,1):1;
+      el.style.zIndex=t>0.5?2:1;
+    });
+    const cur=Math.round(idx);
+    if(cur!==lastCur){pulse(cur>lastCur?rkR:rkL,cur>lastCur?'r':'l');lastCur=cur;}
+    const capIdx=p<1/3?0:p<2/3?1:2;
+    caps.forEach((c,i)=>c.classList.toggle('on',i===capIdx));
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -55,6 +55,8 @@ export interface OpenSourceItem {
   tags: string[];
   href: string;
   license?: string;
+  /** optional live demo / showcase URL */
+  demo?: string;
 }
 
 export interface Education {
@@ -301,6 +303,7 @@ export const openSource: OpenSourceItem[] = [
     tags: ["Jetpack Compose", "Android TV", "JitPack"],
     href: "https://github.com/souravnoobcoder/roku-focus-list",
     license: "Apache-2.0",
+    demo: "/rokufocus.html",
   },
   {
     name: "adb-dashboard",
