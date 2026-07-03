@@ -1,6 +1,7 @@
 import { Section } from "./ui/Section";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
+import { CountUp } from "./ui/CountUp";
 import { profile, stats } from "../data/profile";
 
 export function About() {
@@ -27,12 +28,16 @@ export function About() {
         <Reveal delay={0.1}>
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
             {stats.map((stat) => (
-              <div key={stat.label} className="bg-surface p-5 sm:p-6">
+              <div
+                key={stat.label}
+                className="bg-surface p-5 transition-colors hover:bg-surface-2 sm:p-6"
+              >
                 <dt className="sr-only">{stat.label}</dt>
                 <dd>
-                  <span className="block text-2xl font-bold tracking-tight text-accent sm:text-3xl">
-                    {stat.value}
-                  </span>
+                  <CountUp
+                    value={stat.value}
+                    className="block text-2xl font-bold tracking-tight text-accent sm:text-3xl"
+                  />
                   <span className="mt-1 block text-sm leading-snug text-muted">
                     {stat.label}
                   </span>

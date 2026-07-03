@@ -13,7 +13,7 @@ export function Education() {
         title="Academic background"
       />
 
-      <Reveal className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
+      <Reveal className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-accent/30 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-line bg-surface-2 text-accent">
             <GraduationCap size={20} aria-hidden="true" />

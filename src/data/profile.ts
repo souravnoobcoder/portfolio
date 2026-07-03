@@ -80,6 +80,32 @@ export const profile = {
   resumeUrl: "/resume.pdf",
 } as const;
 
+/** Rotating stack lines typed out under the hero role. */
+export const heroStackLines = [
+  "Kotlin · Jetpack Compose · KMP / CMP",
+  "Android TV · Fire TV · Mobile · iOS",
+  "Media3 · ExoPlayer · Widevine DRM",
+  "One codebase · Four platforms",
+] as const;
+
+/** Compact tech list for the scrolling marquee strip under the hero. */
+export const marqueeSkills = [
+  "Kotlin",
+  "Jetpack Compose",
+  "Kotlin Multiplatform",
+  "Compose Multiplatform",
+  "Android TV",
+  "Fire TV",
+  "Media3 / ExoPlayer",
+  "Widevine DRM",
+  "Coroutines & Flow",
+  "Clean Architecture",
+  "Hilt",
+  "Ktor",
+  "SDK Design",
+  "In-App Purchases",
+] as const;
+
 export const navLinks: NavLink[] = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },

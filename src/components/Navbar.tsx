@@ -125,11 +125,19 @@ export function Navbar() {
                 href={link.href}
                 aria-current={active === link.href ? "true" : undefined}
                 className={cn(
-                  "rounded-md px-3 py-2 text-sm transition-colors",
+                  "relative rounded-full px-3 py-2 text-sm transition-colors",
                   active === link.href ? "text-fg" : "text-muted hover:text-fg",
                 )}
               >
-                {link.label}
+                {active === link.href ? (
+                  <motion.span
+                    layoutId="nav-active-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 rounded-full border border-line bg-surface"
+                    aria-hidden="true"
+                  />
+                ) : null}
+                <span className="relative">{link.label}</span>
               </a>
             </li>
           ))}

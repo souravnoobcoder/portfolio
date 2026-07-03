@@ -26,6 +26,14 @@
 
   --shadow-glow: 0 0 0 1px rgba(52, 211, 153, 0.12),
     0 8px 40px -12px rgba(52, 211, 153, 0.25);
+  --shadow-glow-strong: 0 0 0 1px rgba(52, 211, 153, 0.2),
+    0 12px 60px -12px rgba(52, 211, 153, 0.4);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6.5s ease-in-out infinite;
+  --animate-caret: caret 1.1s steps(1) infinite;
+  --animate-aurora: aurora 20s ease-in-out infinite alternate;
+  --animate-aurora-slow: aurora 28s ease-in-out infinite alternate-reverse;
 }
 
 /* ---------------------------------------------------------------------------
@@ -35,6 +43,7 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 5.5rem; /* offset for the fixed navbar on anchor jumps */
+    scroll-behavior: smooth;
     /* clip (not hidden) so decorative blur layers can never cause horizontal
        scroll without turning html into a scroll container */
     overflow-x: clip;
@@ -97,6 +106,23 @@
     color: transparent;
   }
 
+  /* Like .text-gradient, but the accent slowly sweeps through the text. */
+  .text-shimmer {
+    background: linear-gradient(
+      110deg,
+      var(--color-fg) 32%,
+      var(--color-accent) 47%,
+      var(--color-accent-2) 53%,
+      var(--color-fg) 68%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shimmer 7s linear infinite;
+  }
+
   .accent-gradient {
     background-image: linear-gradient(
       120deg,
@@ -114,9 +140,143 @@
     background-size: 28px 28px;
   }
 
+  /* Film-grain overlay tile (SVG turbulence) — used at very low opacity. */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+
   .mask-fade-b {
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Interactive card treatments
+   .spotlight-card expects --mx/--my (set from JS on mousemove) and paints a
+   cursor-tracked glow plus a lit border segment via a masked gradient ring.
+--------------------------------------------------------------------------- */
+.spotlight-card {
+  position: relative;
+  --mx: 50%;
+  --my: 50%;
+}
+.spotlight-card::before,
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.spotlight-card::before {
+  background: radial-gradient(
+    360px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--color-accent) 8%, transparent),
+    transparent 65%
+  );
+}
+.spotlight-card::after {
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--color-accent) 55%, transparent),
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.spotlight-card:hover::before,
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* Rotating conic "beam" border — use on a p-px wrapper around a card. */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.border-beam {
+  background-color: var(--color-line);
+  background-image: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    color-mix(in srgb, var(--color-accent) 75%, transparent) 55deg,
+    color-mix(in srgb, var(--color-accent-2) 75%, transparent) 95deg,
+    transparent 150deg
+  );
+  animation: beam-rotate 7s linear infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Keyframes (referenced by the --animate-* tokens and utilities above)
+--------------------------------------------------------------------------- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes aurora {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(5%, 8%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1.04);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -220% center;
+  }
+}
+
+@keyframes beam-rotate {
+  to {
+    --beam-angle: 360deg;
   }
 }
 
