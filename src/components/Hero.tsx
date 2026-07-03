@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowDown, FileText, Mail } from "lucide-react";
-import { profile, socials } from "../data/profile";
+import { heroStackLines, profile, socials } from "../data/profile";
 import { DeviceShowcase } from "./DeviceShowcase";
 import { SocialIcon } from "./ui/SocialIcon";
+import { Magnetic } from "./ui/Magnetic";
+import { TiltCard } from "./ui/TiltCard";
+import { Typewriter } from "./ui/Typewriter";
 
 const container = {
   hidden: {},
@@ -18,14 +21,52 @@ const item = {
   },
 };
 
+const letter = {
+  hidden: { opacity: 0, y: "110%" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
+/** Name split into per-letter spans that cascade up into view. */
+function AnimatedName({ name }: { name: string }) {
+  return (
+    <>
+      <span className="sr-only">{name}</span>
+      <span aria-hidden="true">
+        {name.split(" ").map((word, wi, words) => (
+          <span
+            key={wi}
+            className="inline-block overflow-hidden pb-[0.08em] align-top"
+          >
+            {[...(wi < words.length - 1 ? `${word} ` : word)].map(
+              (ch, ci) => (
+                <motion.span key={ci} variants={letter} className="inline-block">
+                  {ch}
+                </motion.span>
+              ),
+            )}
+          </span>
+        ))}
+      </span>
+    </>
+  );
+}
+
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-28 sm:pt-32">
+    <section
+      id="top"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-28 sm:pt-32"
+    >
       {/* Ambient background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid mask-fade-b opacity-70" />
-        <div className="absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
-        <div className="absolute right-0 top-24 h-72 w-72 rounded-full bg-accent-2/10 blur-[110px]" />
+        <div className="absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-1/2 animate-aurora rounded-full bg-accent/10 blur-[120px]" />
+        <div className="absolute right-0 top-24 h-72 w-72 animate-aurora-slow rounded-full bg-accent-2/10 blur-[110px]" />
+        <div className="absolute -left-24 bottom-0 h-80 w-80 animate-aurora rounded-full bg-accent/5 blur-[130px]" />
       </div>
 
       <div className="mx-auto w-full max-w-6xl px-5 pb-16 sm:px-8 sm:pb-24">
@@ -43,24 +84,24 @@ export function Hero() {
             </motion.div>
 
             <motion.h1
-              variants={item}
+              variants={container}
               className="text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
             >
-              {profile.name}
+              <AnimatedName name={profile.name} />
             </motion.h1>
 
             <motion.p
               variants={item}
-              className="mt-3 text-xl font-semibold text-gradient sm:text-2xl"
+              className="mt-3 text-xl font-semibold sm:text-2xl"
             >
-              {profile.role}
+              <span className="text-shimmer">{profile.role}</span>
             </motion.p>
 
             <motion.p
               variants={item}
-              className="mt-1 font-mono text-sm text-faint"
+              className="mt-1 min-h-[1.5rem] font-mono text-sm text-faint"
             >
-              {profile.titleLine}
+              <Typewriter lines={heroStackLines} />
             </motion.p>
 
             <motion.p
@@ -74,48 +115,55 @@ export function Hero() {
               variants={item}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <a
-                href="#work"
-                className="group inline-flex items-center gap-2 rounded-lg accent-gradient px-5 py-3 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
-              >
-                View my work
-                <ArrowDown
-                  size={16}
-                  className="transition-transform group-hover:translate-y-0.5"
-                  aria-hidden="true"
-                />
-              </a>
-              <a
-                href={profile.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent"
-              >
-                <FileText size={16} aria-hidden="true" />
-                Download Resume
-              </a>
+              <Magnetic>
+                <a
+                  href="#work"
+                  className="group inline-flex items-center gap-2 rounded-lg accent-gradient px-5 py-3 text-sm font-semibold text-accent-ink shadow-[var(--shadow-glow)] transition-shadow hover:shadow-[var(--shadow-glow-strong)]"
+                >
+                  View my work
+                  <ArrowDown
+                    size={16}
+                    className="transition-transform group-hover:translate-y-0.5"
+                    aria-hidden="true"
+                  />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a
+                  href={profile.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent"
+                >
+                  <FileText size={16} aria-hidden="true" />
+                  Download Resume
+                </a>
+              </Magnetic>
             </motion.div>
 
             <motion.div variants={item} className="mt-8 flex items-center gap-3">
               {socials.map((s) => (
+                <Magnetic key={s.label} strength={0.35}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+                  >
+                    <SocialIcon icon={s.icon} size={18} aria-hidden="true" />
+                  </a>
+                </Magnetic>
+              ))}
+              <Magnetic strength={0.35}>
                 <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
+                  href={`mailto:${profile.email}`}
+                  aria-label="Email"
                   className="group inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
                 >
-                  <SocialIcon icon={s.icon} size={18} aria-hidden="true" />
+                  <Mail size={18} aria-hidden="true" />
                 </a>
-              ))}
-              <a
-                href={`mailto:${profile.email}`}
-                aria-label="Email"
-                className="group inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
-              >
-                <Mail size={18} aria-hidden="true" />
-              </a>
+              </Magnetic>
               <span className="ml-1 font-mono text-xs text-faint">
                 {profile.location}
               </span>
@@ -126,12 +174,32 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="order-first flex justify-center lg:order-last lg:justify-end"
+            className="order-first flex min-w-0 justify-center lg:order-last lg:justify-end"
           >
-            <DeviceShowcase />
+            <TiltCard className="w-full max-w-[29rem]">
+              <DeviceShowcase />
+            </TiltCard>
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="#about"
+        aria-label="Scroll to about section"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-faint transition-colors hover:text-accent md:block"
+      >
+        <motion.span
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+          className="block"
+        >
+          <ArrowDown size={18} aria-hidden="true" />
+        </motion.span>
+      </motion.a>
     </section>
   );
 }

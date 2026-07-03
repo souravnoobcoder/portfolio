@@ -3,6 +3,7 @@ import { Check, Flame, Smartphone, Sparkles, Tablet, Tv } from "lucide-react";
 import { Section } from "./ui/Section";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
+import { SpotlightCard } from "./ui/SpotlightCard";
 import { AppleIcon, AndroidIcon } from "./ui/BrandIcons";
 import { projects, type Project } from "../data/profile";
 import { cn } from "../lib/cn";
@@ -20,12 +21,18 @@ function platformIcon(platform: string): IconType {
 
 function ProjectCard({ project, large }: { project: Project; large?: boolean }) {
   return (
-    <div
+    <SpotlightCard
       className={cn(
-        "group flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-accent/40",
+        "group flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition-[translate,border-color] duration-300 hover:-translate-y-1",
         large && "sm:p-7",
       )}
     >
+      {project.featured ? (
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent"
+        />
+      ) : null}
       <div className="mb-3 flex flex-wrap gap-1.5">
         {project.platforms.map((p) => {
           const Icon = platformIcon(p);
@@ -76,13 +83,13 @@ function ProjectCard({ project, large }: { project: Project; large?: boolean }) 
         {project.tags.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-line-soft px-2.5 py-0.5 text-xs text-muted"
+            className="rounded-full border border-line-soft px-2.5 py-0.5 text-xs text-muted transition-colors duration-200 group-hover:border-accent/25"
           >
             {t}
           </span>
         ))}
       </div>
-    </div>
+    </SpotlightCard>
   );
 }
 

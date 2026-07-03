@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { Section } from "./ui/Section";
 import { SectionHeading } from "./ui/SectionHeading";
@@ -5,6 +7,17 @@ import { Reveal } from "./ui/Reveal";
 import { experience } from "../data/profile";
 
 export function Experience() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 75%", "end 55%"],
+  });
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 26,
+    mass: 0.5,
+  });
+
   return (
     <Section id="experience" labelledBy="experience-heading">
       <SectionHeading
@@ -14,16 +27,37 @@ export function Experience() {
         description="4+ years building Android, Android TV, Fire TV, and multiplatform products — from intern to senior."
       />
 
-      <ol className="relative border-l border-line pl-6 sm:pl-8">
+      <ol ref={listRef} className="relative">
+        {/* Timeline rail + accent line that draws itself as you scroll */}
+        <span
+          aria-hidden="true"
+          className="absolute bottom-2 left-1 top-2 w-[2px] rounded-full bg-line"
+        />
+        <motion.span
+          aria-hidden="true"
+          style={{ scaleY }}
+          className="absolute bottom-2 left-1 top-2 w-[2px] origin-top rounded-full bg-gradient-to-b from-accent to-accent-2 shadow-[0_0_12px_rgba(52,211,153,0.4)]"
+        />
+
         {experience.map((job, i) => (
-          <li key={`${job.company}-${job.period}`} className="relative pb-12 last:pb-0">
+          <li
+            key={`${job.company}-${job.period}`}
+            className="relative pb-12 pl-8 last:pb-0 sm:pl-10"
+          >
             <span
-              className={[
-                "absolute -left-[6.5px] sm:-left-[8.5px] top-1.5 h-3 w-3 rounded-full ring-4 ring-bg",
-                job.current ? "bg-accent" : "bg-faint",
-              ].join(" ")}
+              className="absolute left-[5px] top-1.5 flex h-3 w-3 -translate-x-1/2 items-center justify-center"
               aria-hidden="true"
-            />
+            >
+              {job.current ? (
+                <span className="absolute h-full w-full animate-ping rounded-full bg-accent/50" />
+              ) : null}
+              <span
+                className={[
+                  "relative h-3 w-3 rounded-full ring-4 ring-bg",
+                  job.current ? "bg-accent" : "bg-faint",
+                ].join(" ")}
+              />
+            </span>
             <Reveal delay={Math.min(i * 0.05, 0.2)}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
                 <h3 className="text-lg font-semibold text-fg">

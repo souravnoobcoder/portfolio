@@ -2,6 +2,7 @@ import { ArrowUpRight, ExternalLink, Scale, Github } from "lucide-react";
 import { Section } from "./ui/Section";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
+import { SpotlightCard } from "./ui/SpotlightCard";
 import { openSource } from "../data/profile";
 
 export function OpenSource() {
@@ -17,7 +18,7 @@ export function OpenSource() {
       <div className="grid gap-4 sm:grid-cols-2">
         {openSource.map((item, i) => (
           <Reveal key={item.name} delay={i * 0.08} className="h-full">
-            <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-accent/40">
+            <SpotlightCard className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition-[translate,border-color] duration-300 hover:-translate-y-1">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2.5">
                   <span className="grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2 text-fg">
@@ -78,7 +79,7 @@ export function OpenSource() {
                   />
                 </a>
               </div>
-            </div>
+            </SpotlightCard>
           </Reveal>
         ))}
       </div>

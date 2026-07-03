@@ -1,4 +1,5 @@
-import type { ComponentType } from "react";
+import { useEffect, useState, type ComponentType } from "react";
+import { motion } from "framer-motion";
 import { Flame } from "lucide-react";
 import { AppleIcon, AndroidIcon } from "./ui/BrandIcons";
 import { cn } from "../lib/cn";
@@ -40,6 +41,18 @@ const appsRow = [g[1], g[3], g[0], g[5], g[2], g[4], g[1], g[3]];
  * target platforms. Says "one codebase across mobile, TV, and iOS" at a glance.
  */
 export function DeviceShowcase() {
+  const [focusIdx, setFocusIdx] = useState(1);
+
+  // Step the TV focus ring across the rail like a D-pad key-repeat.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(
+      () => setFocusIdx((i) => (i + 1) % continueRow.length),
+      2400,
+    );
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div className="relative w-full max-w-[29rem]">
       <div
@@ -70,12 +83,12 @@ export function DeviceShowcase() {
               </p>
               <div className="mb-2.5 flex gap-2">
                 {continueRow.map((c, i) => {
-                  const focused = i === 1;
+                  const focused = i === focusIdx;
                   return (
                     <div key={i} className="relative shrink-0">
                       <div
                         className={cn(
-                          "relative h-[3.25rem] w-[5.5rem] overflow-hidden rounded bg-gradient-to-br",
+                          "relative h-[3.25rem] w-[5.5rem] overflow-hidden rounded bg-gradient-to-br transition-[scale,filter] duration-300",
                           c.grad,
                           focused && "scale-[1.06] brightness-110",
                         )}
@@ -85,7 +98,9 @@ export function DeviceShowcase() {
                         </span>
                       </div>
                       {focused ? (
-                        <div
+                        <motion.div
+                          layoutId="tv-focus-ring"
+                          transition={{ type: "spring", stiffness: 420, damping: 32 }}
                           className="absolute -inset-[2.5px] rounded-md border-2 border-accent shadow-[0_0_11px_rgba(52,211,153,0.5)]"
                           aria-hidden="true"
                         />
@@ -140,7 +155,7 @@ export function DeviceShowcase() {
         </div>
 
         {/* ===== Phone (in front, lower-right) — tall 9:19 body ===== */}
-        <div className="absolute bottom-4 right-0 w-[21%] rotate-[3deg]">
+        <div className="absolute bottom-4 right-0 w-[21%] rotate-[3deg] animate-float will-change-transform">
           <div className={cn("relative rounded-[1.5rem] p-1 shadow-2xl shadow-black/60", frame)}>
             {/* side button */}
             <span
@@ -194,7 +209,7 @@ export function DeviceShowcase() {
         {platforms.map(({ label, Icon, tint }) => (
           <span
             key={label}
-            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted"
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-[translate,border-color,color] duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-fg"
           >
             <Icon size={13} className={tint} />
             {label}
