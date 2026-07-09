@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowDown, FileText, Mail } from "lucide-react";
 import { heroStackLines, profile, socials } from "../data/profile";
 import { DeviceShowcase } from "./DeviceShowcase";
@@ -56,36 +55,7 @@ function AnimatedName({ name }: { name: string }) {
   );
 }
 
-/** Plexus loop behind the hero; pauses offscreen to save battery. */
-function BackgroundVideo() {
-  const ref = useRef<HTMLVideoElement>(null);
-  const inView = useInView(ref);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    if (inView) void video.play().catch(() => {});
-    else video.pause();
-  }, [inView]);
-
-  return (
-    <video
-      ref={ref}
-      className="absolute inset-0 h-full w-full object-cover opacity-40"
-      src="/hero-plexus.mp4"
-      poster="/hero-plexus-poster.jpg"
-      autoPlay
-      muted
-      loop
-      playsInline
-      disablePictureInPicture
-    />
-  );
-}
-
 export function Hero() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section
       id="top"
@@ -93,8 +63,6 @@ export function Hero() {
     >
       {/* Ambient background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        {!reduceMotion && <BackgroundVideo />}
-        <div className="absolute inset-0 bg-gradient-to-b from-bg/60 via-bg/20 to-bg" />
         <div className="absolute inset-0 bg-grid mask-fade-b opacity-70" />
         <div className="absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-1/2 animate-aurora rounded-full bg-accent/10 blur-[120px]" />
         <div className="absolute right-0 top-24 h-72 w-72 animate-aurora-slow rounded-full bg-accent-2/10 blur-[110px]" />

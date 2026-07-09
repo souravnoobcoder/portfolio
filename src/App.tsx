@@ -12,6 +12,7 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { ScrollProgress } from "./components/ui/ScrollProgress";
 import { CursorGlow } from "./components/ui/CursorGlow";
+import { BackgroundVideo } from "./components/ui/BackgroundVideo";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         Skip to content
       </a>
 
+      <BackgroundVideo />
       <ScrollProgress />
       <CursorGlow />
       {/* Film grain over the whole page for texture */}
