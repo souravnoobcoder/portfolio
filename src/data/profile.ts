@@ -46,6 +46,8 @@ export interface Project {
   highlights: string[];
   tags: string[];
   featured?: boolean;
+  /** Abstract on-brand cover banner (in /public/img), rendered atop the card. */
+  cover?: string;
 }
 
 export interface OpenSourceItem {
@@ -271,6 +273,7 @@ export const projects: Project[] = [
     ],
     tags: ["Jetpack Compose", "KMP", "Media3", "SDK"],
     featured: true,
+    cover: "/img/cover-panel-sdk.svg",
   },
   {
     title: "OTT App — Compose Multiplatform Migration",
@@ -284,6 +287,7 @@ export const projects: Project[] = [
     ],
     tags: ["Compose Multiplatform", "Kotlin", "iOS", "Adaptive UI"],
     featured: true,
+    cover: "/img/cover-cmp.svg",
   },
   {
     title: "Live-Streaming SDK",
@@ -295,6 +299,7 @@ export const projects: Project[] = [
       "One SDK spanning Leanback TV and mobile surfaces",
     ],
     tags: ["Media3", "ExoPlayer", "Leanback", "HLS"],
+    cover: "/img/cover-live.svg",
   },
   {
     title: "Streaming Media App",
@@ -306,6 +311,7 @@ export const projects: Project[] = [
       "D-pad navigation tuned for the TV experience",
     ],
     tags: ["Media3", "Widevine DRM", "Android TV"],
+    cover: "/img/cover-media.svg",
   },
   {
     title: "Streaming App — Fire TV",
@@ -317,6 +323,7 @@ export const projects: Project[] = [
       "Fire TV–optimized navigation and UX",
     ],
     tags: ["Fire TV", "In-App Purchases"],
+    cover: "/img/cover-firetv.svg",
   },
 ];
 

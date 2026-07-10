@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <defs>
+    <linearGradient id="strokef" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <radialGradient id="bgglowf" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#0f2a20"/>
+      <stop offset="55%" stop-color="#0b1412"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
+    </radialGradient>
+    <radialGradient id="coref" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#d9fff0"/>
+      <stop offset="35%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dotsf" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+    <filter id="glowf" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglowf" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgglowf)"/>
+  <rect width="640" height="360" fill="url(#dotsf)"/>
+  <g opacity="0.55">
+  <line x1="100" y1="110" x2="90" y2="240" stroke="#2dd4bf" stroke-width="0.8" opacity="0.218"/>
+  <line x1="100" y1="110" x2="60" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.356"/>
+  <line x1="90" y1="240" x2="150" y2="320" stroke="#2dd4bf" stroke-width="0.8" opacity="0.302"/>
+  <line x1="90" y1="240" x2="60" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.394"/>
+  <line x1="150" y1="320" x2="320" y2="340" stroke="#2dd4bf" stroke-width="0.8" opacity="0.105"/>
+  <line x1="150" y1="320" x2="60" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.118"/>
+  <line x1="500" y1="320" x2="560" y2="240" stroke="#2dd4bf" stroke-width="0.8" opacity="0.302"/>
+  <line x1="500" y1="320" x2="590" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.118"/>
+  <line x1="560" y1="240" x2="555" y2="110" stroke="#2dd4bf" stroke-width="0.8" opacity="0.219"/>
+  <line x1="560" y1="240" x2="590" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.394"/>
+  <line x1="555" y1="110" x2="590" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.363"/>
+  </g>
+  <g filter="url(#glowf)">
+  <circle cx="100" cy="110" r="2" fill="#34d399"/>
+  <circle cx="90" cy="240" r="2" fill="#34d399"/>
+  <circle cx="150" cy="320" r="2" fill="#34d399"/>
+  <circle cx="320" cy="340" r="2" fill="#34d399"/>
+  <circle cx="500" cy="320" r="2" fill="#34d399"/>
+  <circle cx="560" cy="240" r="2" fill="#34d399"/>
+  <circle cx="555" cy="110" r="2" fill="#34d399"/>
+  <circle cx="60" cy="180" r="2" fill="#34d399"/>
+  <circle cx="590" cy="180" r="2" fill="#34d399"/>
+  </g><rect x="150" y="90" width="340" height="200" rx="14" fill="none" stroke="url(#strokef)" stroke-width="2" opacity="1" filter="url(#glowf)"/><line x1="320" y1="290" x2="320" y2="312" stroke="#34d399" stroke-width="2.4" opacity="0.85"/><line x1="272" y1="312" x2="368" y2="312" stroke="#34d399" stroke-width="2.4" opacity="0.85" stroke-linecap="round"/><ellipse cx="320" cy="200" rx="66" ry="86" fill="url(#coref)" opacity="0.3"/><g filter="url(#glowf)">
+      <path d="M320 250 C 268 214 300 176 314 140 C 320 168 344 172 340 200 C 358 190 356 166 350 150 C 386 188 378 240 320 250 Z"
+            fill="none" stroke="url(#strokef)" stroke-width="2.2" stroke-linejoin="round" opacity="0.95"/>
+      <path d="M320 244 C 292 220 308 194 318 172 C 324 190 338 194 334 212 C 348 202 346 194 342 186 C 360 208 354 236 320 244 Z"
+            fill="none" stroke="#2dd4bf" stroke-width="1.6" opacity="0.8"/>
+    </g>
+</svg>

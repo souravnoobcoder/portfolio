@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <defs>
+    <linearGradient id="strokep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <radialGradient id="bgglowp" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#0f2a20"/>
+      <stop offset="55%" stop-color="#0b1412"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
+    </radialGradient>
+    <radialGradient id="corep" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#d9fff0"/>
+      <stop offset="35%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dotsp" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+    <filter id="glowp" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglowp" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgglowp)"/>
+  <rect width="640" height="360" fill="url(#dotsp)"/>
+  <g opacity="0.55">
+  <line x1="120" y1="95" x2="230" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.253"/>
+  <line x1="120" y1="95" x2="270" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.11"/>
+  <line x1="230" y1="80" x2="340" y2="60" stroke="#2dd4bf" stroke-width="0.8" opacity="0.251"/>
+  <line x1="230" y1="80" x2="270" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.343"/>
+  <line x1="340" y1="60" x2="450" y2="86" stroke="#2dd4bf" stroke-width="0.8" opacity="0.248"/>
+  <line x1="340" y1="60" x2="410" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.245"/>
+  <line x1="340" y1="60" x2="270" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.245"/>
+  <line x1="450" y1="86" x2="560" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.256"/>
+  <line x1="450" y1="86" x2="410" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.358"/>
+  <line x1="560" y1="80" x2="410" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.093"/>
+  <line x1="300" y1="300" x2="430" y2="305" stroke="#2dd4bf" stroke-width="0.8" opacity="0.197"/>
+  <line x1="300" y1="300" x2="270" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.13"/>
+  <line x1="430" y1="305" x2="560" y2="300" stroke="#2dd4bf" stroke-width="0.8" opacity="0.197"/>
+  <line x1="430" y1="305" x2="410" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.12"/>
+  <line x1="410" y1="150" x2="270" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.168"/>
+  </g>
+  <g filter="url(#glowp)">
+  <circle cx="120" cy="95" r="2" fill="#34d399"/>
+  <circle cx="230" cy="80" r="2" fill="#34d399"/>
+  <circle cx="340" cy="60" r="2" fill="#34d399"/>
+  <circle cx="450" cy="86" r="2" fill="#34d399"/>
+  <circle cx="560" cy="80" r="2" fill="#34d399"/>
+  <circle cx="95" cy="285" r="2" fill="#34d399"/>
+  <circle cx="300" cy="300" r="2" fill="#34d399"/>
+  <circle cx="430" cy="305" r="2" fill="#34d399"/>
+  <circle cx="560" cy="300" r="2" fill="#34d399"/>
+  <circle cx="410" cy="150" r="2" fill="#34d399"/>
+  <circle cx="270" cy="150" r="2" fill="#34d399"/>
+  </g><circle cx="340" cy="183" r="46" fill="url(#corep)" opacity="0.35"/><rect x="60" y="120" width="200" height="125" rx="10" fill="none" stroke="url(#strokep)" stroke-width="1.6" opacity="1" filter="url(#glowp)"/><line x1="160" y1="245" x2="160" y2="262" stroke="#34d399" stroke-width="2" opacity="0.8"/><line x1="128" y1="262" x2="192" y2="262" stroke="#34d399" stroke-width="2" opacity="0.8" stroke-linecap="round"/><rect x="500" y="110" width="78" height="150" rx="14" fill="none" stroke="url(#strokep)" stroke-width="1.6" opacity="1" filter="url(#glowp)"/><line x1="527" y1="122" x2="551" y2="122" stroke="#2dd4bf" stroke-width="2" opacity="0.7" stroke-linecap="round"/><line x1="292" y1="183" x2="260" y2="183" stroke="url(#strokep)" stroke-width="1.6" opacity="0.85"/><line x1="388" y1="183" x2="500" y2="185" stroke="url(#strokep)" stroke-width="1.6" opacity="0.85"/><rect x="292" y="150" width="96" height="66" rx="12" fill="none" stroke="url(#strokep)" stroke-width="1.8" opacity="1" filter="url(#glowp)"/><line x1="308" y1="170" x2="372" y2="170" stroke="#2dd4bf" stroke-width="1.4" opacity="0.75" stroke-linecap="round"/><line x1="308" y1="184" x2="372" y2="184" stroke="#2dd4bf" stroke-width="1.4" opacity="0.5700000000000001" stroke-linecap="round"/><line x1="308" y1="198" x2="372" y2="198" stroke="#2dd4bf" stroke-width="1.4" opacity="0.39" stroke-linecap="round"/>
+</svg>

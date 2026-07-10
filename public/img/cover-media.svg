@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <defs>
+    <linearGradient id="strokem" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <radialGradient id="bgglowm" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#0f2a20"/>
+      <stop offset="55%" stop-color="#0b1412"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
+    </radialGradient>
+    <radialGradient id="corem" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#d9fff0"/>
+      <stop offset="35%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dotsm" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+    <filter id="glowm" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglowm" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgglowm)"/>
+  <rect width="640" height="360" fill="url(#dotsm)"/>
+  <g opacity="0.55">
+  <line x1="120" y1="90" x2="200" y2="70" stroke="#2dd4bf" stroke-width="0.8" opacity="0.337"/>
+  <line x1="120" y1="90" x2="120" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.315"/>
+  <line x1="200" y1="70" x2="300" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.284"/>
+  <line x1="200" y1="70" x2="120" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.18"/>
+  <line x1="300" y1="80" x2="420" y2="70" stroke="#2dd4bf" stroke-width="0.8" opacity="0.226"/>
+  <line x1="420" y1="70" x2="520" y2="90" stroke="#2dd4bf" stroke-width="0.8" opacity="0.28"/>
+  <line x1="420" y1="70" x2="560" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.167"/>
+  <line x1="520" y1="90" x2="560" y2="180" stroke="#2dd4bf" stroke-width="0.8" opacity="0.29"/>
+  <line x1="520" y1="90" x2="560" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.459"/>
+  <line x1="560" y1="180" x2="560" y2="80" stroke="#2dd4bf" stroke-width="0.8" opacity="0.286"/>
+  </g>
+  <g filter="url(#glowm)">
+  <circle cx="120" cy="90" r="1.8" fill="#34d399"/>
+  <circle cx="200" cy="70" r="1.8" fill="#34d399"/>
+  <circle cx="300" cy="80" r="1.8" fill="#34d399"/>
+  <circle cx="420" cy="70" r="1.8" fill="#34d399"/>
+  <circle cx="520" cy="90" r="1.8" fill="#34d399"/>
+  <circle cx="560" cy="180" r="1.8" fill="#34d399"/>
+  <circle cx="120" cy="180" r="1.8" fill="#34d399"/>
+  <circle cx="560" cy="80" r="1.8" fill="#34d399"/>
+  </g><circle cx="270" cy="180" r="60" fill="url(#corem)" opacity="0.28"/><path d="M235 120 L235 240 L330 180 Z" fill="none" stroke="url(#strokem)" stroke-width="2.4" stroke-linejoin="round" opacity="0.95" filter="url(#glowm)"/><line x1="380" y1="255.0" x2="380" y2="265.0" stroke="#2dd4bf" stroke-width="3" opacity="0.43" stroke-linecap="round"/><line x1="392" y1="249.0" x2="392" y2="271.0" stroke="#2dd4bf" stroke-width="3" opacity="0.526" stroke-linecap="round"/><line x1="404" y1="243.0" x2="404" y2="277.0" stroke="#2dd4bf" stroke-width="3" opacity="0.622" stroke-linecap="round"/><line x1="416" y1="251.0" x2="416" y2="269.0" stroke="#2dd4bf" stroke-width="3" opacity="0.494" stroke-linecap="round"/><line x1="428" y1="239.0" x2="428" y2="281.0" stroke="#2dd4bf" stroke-width="3" opacity="0.6859999999999999" stroke-linecap="round"/><line x1="440" y1="246.0" x2="440" y2="274.0" stroke="#2dd4bf" stroke-width="3" opacity="0.5740000000000001" stroke-linecap="round"/><line x1="452" y1="235.0" x2="452" y2="285.0" stroke="#2dd4bf" stroke-width="3" opacity="0.75" stroke-linecap="round"/><line x1="464" y1="245.0" x2="464" y2="275.0" stroke="#2dd4bf" stroke-width="3" opacity="0.59" stroke-linecap="round"/><line x1="476" y1="238.0" x2="476" y2="282.0" stroke="#2dd4bf" stroke-width="3" opacity="0.702" stroke-linecap="round"/><line x1="488" y1="250.0" x2="488" y2="270.0" stroke="#2dd4bf" stroke-width="3" opacity="0.51" stroke-linecap="round"/><line x1="500" y1="242.0" x2="500" y2="278.0" stroke="#2dd4bf" stroke-width="3" opacity="0.6379999999999999" stroke-linecap="round"/><line x1="512" y1="253.0" x2="512" y2="267.0" stroke="#2dd4bf" stroke-width="3" opacity="0.46199999999999997" stroke-linecap="round"/><line x1="524" y1="247.0" x2="524" y2="273.0" stroke="#2dd4bf" stroke-width="3" opacity="0.558" stroke-linecap="round"/><line x1="536" y1="240.0" x2="536" y2="280.0" stroke="#2dd4bf" stroke-width="3" opacity="0.67" stroke-linecap="round"/><line x1="548" y1="248.0" x2="548" y2="272.0" stroke="#2dd4bf" stroke-width="3" opacity="0.542" stroke-linecap="round"/><line x1="120" y1="290" x2="520" y2="290" stroke="#1f2a27" stroke-width="4" stroke-linecap="round"/><line x1="120" y1="290" x2="360" y2="290" stroke="url(#strokem)" stroke-width="4" stroke-linecap="round" filter="url(#glowm)"/><circle cx="360" cy="290" r="6" fill="#eafff7" filter="url(#glowm)"/>
+</svg>
