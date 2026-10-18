@@ -21,73 +21,83 @@ function platformIcon(platform: string): IconType {
 
 function ProjectCard({ project, large }: { project: Project; large?: boolean }) {
   return (
-    <SpotlightCard
-      className={cn(
-        "group flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition-[translate,border-color] duration-300 hover:-translate-y-1",
-        large && "sm:p-7",
-      )}
-    >
-      {project.featured ? (
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent"
-        />
-      ) : null}
-      <div className="mb-3 flex flex-wrap gap-1.5">
-        {project.platforms.map((p) => {
-          const Icon = platformIcon(p);
-          return (
-            <span
-              key={p}
-              className="inline-flex items-center gap-1 rounded-md bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-muted"
-            >
-              <Icon size={11} className="text-muted" />
-              {p}
-            </span>
-          );
-        })}
-      </div>
-
-      <h3
-        className={cn(
-          "font-semibold tracking-tight text-fg",
-          large ? "text-xl" : "text-lg",
-        )}
-      >
-        {project.featured ? (
-          <Sparkles
-            size={15}
-            className="mr-1.5 inline align-[-2px] text-accent"
+    <SpotlightCard className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[translate,border-color] duration-300 hover:-translate-y-1">
+      {project.cover ? (
+        <div className="relative overflow-hidden border-b border-line-soft bg-bg">
+          <img
+            src={project.cover}
+            alt=""
             aria-hidden="true"
+            loading="lazy"
+            className={cn(
+              "w-full object-cover opacity-90 transition-transform duration-500 ease-out group-hover:scale-[1.04]",
+              large ? "h-32 sm:h-36" : "h-28",
+            )}
           />
-        ) : null}
-        {project.title}
-      </h3>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface to-transparent"
+          />
+        </div>
+      ) : null}
 
-      <p className="mt-2 text-sm leading-relaxed text-muted">{project.blurb}</p>
+      <div className={cn("flex flex-1 flex-col p-6", large && "sm:p-7")}>
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          {project.platforms.map((p) => {
+            const Icon = platformIcon(p);
+            return (
+              <span
+                key={p}
+                className="inline-flex items-center gap-1 rounded-md bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-muted"
+              >
+                <Icon size={11} className="text-muted" />
+                {p}
+              </span>
+            );
+          })}
+        </div>
 
-      <ul className="mt-4 space-y-2">
-        {project.highlights.map((h) => (
-          <li key={h} className="flex gap-2 text-sm text-fg/85">
-            <Check
-              size={16}
-              className="mt-0.5 shrink-0 text-accent"
+        <h3
+          className={cn(
+            "font-semibold tracking-tight text-fg",
+            large ? "text-xl" : "text-lg",
+          )}
+        >
+          {project.featured ? (
+            <Sparkles
+              size={15}
+              className="mr-1.5 inline align-[-2px] text-accent"
               aria-hidden="true"
             />
-            <span>{h}</span>
-          </li>
-        ))}
-      </ul>
+          ) : null}
+          {project.title}
+        </h3>
 
-      <div className="mt-5 flex flex-wrap gap-2 border-t border-line-soft pt-4">
-        {project.tags.map((t) => (
-          <span
-            key={t}
-            className="rounded-full border border-line-soft px-2.5 py-0.5 text-xs text-muted transition-colors duration-200 group-hover:border-accent/25"
-          >
-            {t}
-          </span>
-        ))}
+        <p className="mt-2 text-sm leading-relaxed text-muted">{project.blurb}</p>
+
+        <ul className="mt-4 space-y-2">
+          {project.highlights.map((h) => (
+            <li key={h} className="flex gap-2 text-sm text-fg/85">
+              <Check
+                size={16}
+                className="mt-0.5 shrink-0 text-accent"
+                aria-hidden="true"
+              />
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-5 flex flex-wrap gap-2 border-t border-line-soft pt-4">
+          {project.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-line-soft px-2.5 py-0.5 text-xs text-muted transition-colors duration-200 group-hover:border-accent/25"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
     </SpotlightCard>
   );

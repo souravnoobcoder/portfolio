@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <defs>
+    <linearGradient id="strokec" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <radialGradient id="bgglowc" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#0f2a20"/>
+      <stop offset="55%" stop-color="#0b1412"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
+    </radialGradient>
+    <radialGradient id="corec" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#d9fff0"/>
+      <stop offset="35%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dotsc" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+    <filter id="glowc" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglowc" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgglowc)"/>
+  <rect width="640" height="360" fill="url(#dotsc)"/>
+  <g opacity="0.55">
+  <line x1="90" y1="140" x2="120" y2="250" stroke="#2dd4bf" stroke-width="0.8" opacity="0.28"/>
+  <line x1="90" y1="140" x2="60" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.38"/>
+  <line x1="120" y1="250" x2="200" y2="300" stroke="#2dd4bf" stroke-width="0.8" opacity="0.332"/>
+  <line x1="120" y1="250" x2="60" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.39"/>
+  <line x1="200" y1="300" x2="320" y2="320" stroke="#2dd4bf" stroke-width="0.8" opacity="0.26"/>
+  <line x1="200" y1="300" x2="60" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.142"/>
+  <line x1="320" y1="320" x2="440" y2="300" stroke="#2dd4bf" stroke-width="0.8" opacity="0.26"/>
+  <line x1="440" y1="300" x2="540" y2="250" stroke="#2dd4bf" stroke-width="0.8" opacity="0.286"/>
+  <line x1="440" y1="300" x2="590" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.12"/>
+  <line x1="540" y1="250" x2="575" y2="150" stroke="#2dd4bf" stroke-width="0.8" opacity="0.301"/>
+  <line x1="540" y1="250" x2="590" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.411"/>
+  <line x1="575" y1="150" x2="590" y2="210" stroke="#2dd4bf" stroke-width="0.8" opacity="0.417"/>
+  </g>
+  <g filter="url(#glowc)">
+  <circle cx="90" cy="140" r="2" fill="#34d399"/>
+  <circle cx="120" cy="250" r="2" fill="#34d399"/>
+  <circle cx="200" cy="300" r="2" fill="#34d399"/>
+  <circle cx="320" cy="320" r="2" fill="#34d399"/>
+  <circle cx="440" cy="300" r="2" fill="#34d399"/>
+  <circle cx="540" cy="250" r="2" fill="#34d399"/>
+  <circle cx="575" cy="150" r="2" fill="#34d399"/>
+  <circle cx="60" cy="210" r="2" fill="#34d399"/>
+  <circle cx="590" cy="210" r="2" fill="#34d399"/>
+  </g><line x1="176.0" y1="208.0" x2="320" y2="200" stroke="url(#strokec)" stroke-width="1.3" opacity="0.7"/><line x1="292.0" y1="154.0" x2="320" y2="200" stroke="url(#strokec)" stroke-width="1.3" opacity="0.7"/><line x1="465.0" y1="158.0" x2="320" y2="200" stroke="url(#strokec)" stroke-width="1.3" opacity="0.7"/><line x1="548.0" y1="188.0" x2="320" y2="200" stroke="url(#strokec)" stroke-width="1.3" opacity="0.7"/><circle cx="320" cy="200" r="60" fill="url(#corec)" opacity="0.5"/><circle cx="320" cy="200" r="6" fill="#eafff7" filter="url(#glowc)"/><rect x="150" y="120" width="52" height="92" rx="10" fill="none" stroke="url(#strokec)" stroke-width="1.6" opacity="1" filter="url(#glowc)"/><rect x="250" y="92" width="84" height="66" rx="8" fill="none" stroke="url(#strokec)" stroke-width="1.6" opacity="1" filter="url(#glowc)"/><rect x="410" y="92" width="110" height="70" rx="8" fill="none" stroke="url(#strokec)" stroke-width="1.6" opacity="1" filter="url(#glowc)"/><rect x="500" y="130" width="96" height="62" rx="8" fill="none" stroke="url(#strokec)" stroke-width="1.6" opacity="1" filter="url(#glowc)"/><path d="M494 192 h108 l10 12 h-128 z" fill="none" stroke="url(#strokec)" stroke-width="1.4" opacity="0.9" filter="url(#glowc)"/>
+</svg>
